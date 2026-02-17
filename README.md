@@ -1,48 +1,28 @@
-![borealis logo](https://github.com/natinusala/borealis/blob/main/resources/img/borealis_96.png?raw=true)
-# borealis
+# New mGBA
+New mGBA 基于 borealis UI 和 mGBA 模拟器核心开发，旨在为用户提供一个现代化、易用且功能丰富的游戏模拟器界面。
 
-Controller and TV oriented UI library for Android, iOS, PC, PS4, PSV and Nintendo Switch.
+# 开发计划
+## 基础界面框架搭建
+### 游戏
+- [x] 游戏文件选择界面
+- [] 收藏游戏界面
+- [] 最近游玩游戏界面
+- [] 界面视图切换功能（列表视图、网格视图、 水平视图）
 
-- Mimicks the Nintendo Switch system UI, but can also be used to make anything else painlessly
-- Hardware acceleration and vector graphics with automatic scaling for TV usage (powered by nanovg)
-- Can be ported to new platforms and graphics APIs by providing a nanovg implementation
-- Powerful layout engine using flex box as a base for everything (powered by Yoga Layout)
-- Automated navigation paths for out-of-the-box controller navigation
-- Out of the box touch support
-- Define user interfaces using XML and only write code when it matters
-- Use and restyle built-in components or make your own from scratch
-- Display large amount of data efficiently using recycling lists
-- Integrated internationalization and storage systems
-- Integrated toolbox (logger, animations, timers, background tasks...)
+### 设置
+- [] 模拟器设置
+- [] 控制器设置
+- [] 显示设置
+- [] 音频设置
+- [] 遮罩设置
+- [] 着色器设置
+- [] 名称映射管理
+- [] 主题设置
 
-Check the [daily builds](https://github.com/xfangfang/borealis/actions) for what borealis looks like.
-
-## Build the demo code
-
-Check our wiki for more information:
-
-- [Android](https://github.com/xfangfang/borealis/wiki/Android)
-- [iOS](https://github.com/xfangfang/borealis/wiki/iOS)
-- [Windows macOS Linux](https://github.com/xfangfang/borealis/wiki/Windows-macOS-Linux)
-- [NintendoSwitch](https://github.com/xfangfang/borealis/wiki/NintendoSwitch)
-- [PS Vita](https://github.com/xfangfang/borealis/wiki/PS-Vita)
-- [PS4](https://github.com/xfangfang/borealis/wiki/PS4)
-
-## Including in your project
-
-1. Your project must be built as C++17 (`-std=c++1z`). You also need to remove `-fno-rtti` and `-fno-exceptions` if you have them
-2. Use a submodule (or even better, a [subrepo](https://github.com/ingydotnet/git-subrepo)) to clone this repository in your project
-3. Copy the `resources` folder to the root of your project
-
-Or you can start a new project from the [template](https://github.com/xfangfang/borealis_template)
+### 关于
+- [] 项目介绍
 
 
-### Made with borealis (Alphabetical order)
-
-| **Project Name** | **Project Description** |
-| --- | --- |
-| [Moonlight-Switch](https://github.com/XITRIX/Moonlight-Switch) | Moonlight port for Nintendo Switch |
-| [SimpleModDownloader](https://github.com/PoloNX/SimpleModDownloader) | A switch homebrew which downloads mods from gamebanana |
-| [switchfin](https://github.com/dragonflylee/switchfin) | Third-party native Jellyfin client for PC/PS4/Nintendo Switch |
-| [UpcomingSwitchGames](https://github.com/PoloNX/UpcomingSwitchGames) | A switch homebrew for viewing upcoming games |
-| [wiliwili](https://github.com/xfangfang/wiliwili) | Third-party bilibili client for PC/PS4/PSV/XBOX/Nintendo Switch |party bilibili client for PC/PS4/PSV/XBOX/Nintendo Switch | [https://github.com/xfangfang/wiliwili](https://github.com/xfangfang/wiliwili) || Third-party bilibili client for PC/PS4/PSV/XBOX/Nintendo Switch | [https://github.com/xfangfang/wiliwili](https://github.com/xfangfang/wiliwili) |# New-mGBA
+## 功能实现 
+### 核心功能
+- [x] 切换画面渲染

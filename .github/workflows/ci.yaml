@@ -1,4 +1,4 @@
-name: Build borealis demo
+name: Build New-mGBA for Switch
 
 on:
   push:
@@ -24,9 +24,9 @@ jobs:
       - name: Build
         run: |
           cmake -B build -DCMAKE_BUILD_TYPE=Release -DPLATFORM_SWITCH=ON ${{ matrix.cmake }}
-          make -C build borealis_demo.nro -j$(nproc)
+          make -C build New_mGBA.nro -j$(nproc)
       - name: Upload dist
         uses: actions/upload-artifact@v4
         with:
           name: borealis-switch-${{ matrix.ext }}
-          path: build/borealis_demo.nro
+          path: build/New_mGBA.nro

@@ -21,6 +21,9 @@
 class MainActivity : public brls::Activity
 {
   public:
+    MainActivity();
     // Declare that the content of this activity is the given XML file
     CONTENT_FROM_XML_RES("activity/beiklive_main.xml");
+
+  private:
 };

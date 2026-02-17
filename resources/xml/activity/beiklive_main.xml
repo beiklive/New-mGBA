@@ -3,11 +3,15 @@
     footerHidden="false">
     <brls:TabFrame
         title="@i18n/beiklive/title"
-        icon="@res/img/mgba-96.png">
+        icon="@res/img/mgba-96.png"
+        id="mainTabFrame">
 
         <brls:Tab 
-        label="@i18n/beiklive/tabs/select" >
+        label="@i18n/beiklive/tabs/select" 
+        id="select" >
         
+
+
         </brls:Tab>
 
         <brls:Separator />

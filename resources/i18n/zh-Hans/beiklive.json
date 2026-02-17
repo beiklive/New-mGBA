@@ -4,7 +4,8 @@
         "select":  "选择游戏",
         "settings": "设置",
         "about": "关于",
-        "exit": "退出"
+        "exit": "退出",
+        "button_primary": "主按钮"
         
     }
 }

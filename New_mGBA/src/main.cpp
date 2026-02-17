@@ -25,6 +25,7 @@ int main(int argc, char* argv[])
             brls::Application::enableDebuggingView(true);
         }
     }
+            brls::Application::enableDebuggingView(true);
 
     brls::Platform::APP_LOCALE_DEFAULT = brls::LOCALE_AUTO;
 

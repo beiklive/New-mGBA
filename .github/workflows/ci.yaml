@@ -1,4 +1,4 @@
-name: Build New-mGBA for Switch
+name: Build New_mGBA for Switch
 
 on:
   push:
@@ -20,14 +20,14 @@ jobs:
         run: |
           cmake -B build -DCMAKE_BUILD_TYPE=Release -DPLATFORM_DESKTOP=ON -DBUNDLE_MACOS_APP=ON ${{ matrix.window.cmake }}
           make -C build -j$(sysctl -n hw.ncpu)
-          mkdir New-mGBA-macos-${{ matrix.window.name }}
-          mv build/New-mGBA.app New-mGBA-macos-${{ matrix.window.name }}/
-          tar -czvf New-mGBA-macos-${{ matrix.window.name }}.tar.gz New-mGBA-macos-${{ matrix.window.name }}
+          mkdir New_mGBA-macos-${{ matrix.window.name }}
+          mv build/New_mGBA.app New_mGBA-macos-${{ matrix.window.name }}/
+          tar -czvf New_mGBA-macos-${{ matrix.window.name }}.tar.gz New_mGBA-macos-${{ matrix.window.name }}
       - name: Upload dist
         uses: actions/upload-artifact@v4
         with:
-          name: New-mGBA-macos-${{ matrix.window.name }}
-          path: New-mGBA-macos-${{ matrix.window.name }}.tar.gz
+          name: New_mGBA-macos-${{ matrix.window.name }}
+          path: New_mGBA-macos-${{ matrix.window.name }}.tar.gz
   switch:
     runs-on: ubuntu-latest
     container:

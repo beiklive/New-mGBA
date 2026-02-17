@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
 
-find_package(mgba CONFIG REQUIRED)
 
 
 set(BOREALIS_LIBRARY ${CMAKE_CURRENT_SOURCE_DIR}/library)
@@ -49,8 +48,14 @@ find_package(Threads REQUIRED)
 list(APPEND APP_PLATFORM_LIB ${CMAKE_THREAD_LIBS_INIT})
 
 # setting src and include
-list(APPEND APP_PLATFORM_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/demo/include)
-file(GLOB_RECURSE MAIN_SRC demo/*.cpp)
+# list(APPEND APP_PLATFORM_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/demo/include)
+# file(GLOB_RECURSE MAIN_SRC demo/*.cpp)
+
+# New_mGBA 相关=============
+list(APPEND APP_PLATFORM_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/New_mGBA/include)
+file(GLOB_RECURSE MAIN_SRC New_mGBA/src/*.cpp)
+# New_mGBA 相关=============
+
 
 set(PLATFORM_OPTION)
 if (PLATFORM_SWITCH)
@@ -58,11 +63,6 @@ if (PLATFORM_SWITCH)
 endif ()
 
 
-# New_mGBA 相关=============
-target_include_directories(${PROJECT_NAME} PRIVATE /usr/local/include/mgba)
-list(APPEND APP_PLATFORM_LIB mgba)
-include(${NEWMGBA_PATH}/CMakeLists.txt)
-# New_mGBA 相关=============
 
 
 # building target

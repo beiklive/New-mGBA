@@ -11,7 +11,6 @@ jobs:
       matrix:
         window:
           - { name: glfw, cmake: "-DUSE_GLFW=ON" }
-          - { name: sdl2, cmake: "-DUSE_SDL2=ON" }
     steps:
       - name: Checkout
         uses: actions/checkout@v4

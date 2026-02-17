@@ -5,7 +5,6 @@
 *.nro
 *.nacp
 *.elf
-.vscode
 builddir
 *.dksh
 .DS_Store

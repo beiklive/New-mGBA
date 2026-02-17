@@ -10,7 +10,7 @@
         label="@i18n/beiklive/tabs/select" 
         id="select" >
         
-
+            <SelectGameTab />
 
         </brls:Tab>
 

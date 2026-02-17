@@ -2,6 +2,8 @@
 #include <cstdlib>
 #include <string>
 
+#include "UI/tab_select_game.hpp"
+
 #include "main_activity.hpp"
 
 
@@ -40,9 +42,24 @@ int main(int argc, char* argv[])
 
     // brls::Application::getPlatform()->setThemeVariant(brls::ThemeVariant::DARK);
 
+
+    
+    
+    
+    
+    
+    
+    
+    
     // Have the application register an action on every activity that will quit when you press BUTTON_START
     brls::Application::setGlobalQuit(false);
-
+    
+    brls::Application::registerXMLView("SelectGameTab", SelectGameTab::create);
+    
+    
+    
+    
+    
     brls::Application::pushActivity(new MainActivity());
 
     // Run the app

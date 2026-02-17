@@ -1,11 +1,11 @@
 {
-    "title": "New mGBA模拟器",
+    "title": "mGBA",
     "tabs": {
-        "select":  "选择游戏",
+        "select":  "游戏",
         "settings": "设置",
         "about": "关于",
         "exit": "退出",
-        "button_primary": "主按钮"
-        
+        "button_primary": "主按钮",
+        "select-file": "从文件列表选择"
     }
 }

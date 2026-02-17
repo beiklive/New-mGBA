@@ -4,37 +4,31 @@ on:
   push:
   pull_request:
 jobs:
-  ios:
-    runs-on: macos-13
+  macos:
+    runs-on: macos-14
+    name: macos (${{ matrix.window.name }})
+    strategy:
+      matrix:
+        window:
+          - { name: glfw, cmake: "-DUSE_GLFW=ON" }
+          - { name: sdl2, cmake: "-DUSE_SDL2=ON" }
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           submodules: recursive
-      - name: cache
-        id: cache-key
-        run: echo "IOS_CACHE_KEY=ios-cmake-build-dir-${{ hashFiles('**/CMakeLists.txt', '**/*.cmake', '.github/workflows/ci.yaml') }}" >> $GITHUB_OUTPUT
-      - uses: actions/cache/restore@v4
-        id: ios-cache
-        with:
-          path: build
-          key: ${{ steps.cache-key.outputs.IOS_CACHE_KEY }}
       - name: Build
         run: |
-          ./build_libromfs_generator.sh
-          cmake -B build -G Xcode -DPLATFORM_IOS=ON -DPLATFORM=OS64 -DDEPLOYMENT_TARGET=13.0
-          cmake --build build
-          ditto -ck --rsrc --sequesterRsrc --keepParent build/Debug-iphoneos/borealis_demo.app borealis_demo.zip
-      - uses: actions/cache/save@v4
-        if: ${{ !steps.ios-cache.outputs.cache-hit }}
-        with:
-          path: build
-          key: ${{ steps.cache-key.outputs.IOS_CACHE_KEY }}
+          cmake -B build -DCMAKE_BUILD_TYPE=Release -DPLATFORM_DESKTOP=ON -DBUNDLE_MACOS_APP=ON ${{ matrix.window.cmake }}
+          make -C build -j$(sysctl -n hw.ncpu)
+          mkdir borealis-macos-${{ matrix.window.name }}
+          mv build/borealis_demo.app borealis-macos-${{ matrix.window.name }}/
+          tar -czvf borealis-macos-${{ matrix.window.name }}.tar.gz borealis-macos-${{ matrix.window.name }}
       - name: Upload dist
         uses: actions/upload-artifact@v4
         with:
-          name: borealis-ios
-          path: borealis_demo.zip
+          name: borealis-macos-${{ matrix.window.name }}
+          path: borealis-macos-${{ matrix.window.name }}.tar.gz
   switch:
     runs-on: ubuntu-latest
     container:

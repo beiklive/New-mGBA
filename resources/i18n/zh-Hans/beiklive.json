@@ -1,3 +1,10 @@
 {
-    "title": "New mGBA模拟器"
+    "title": "New mGBA模拟器",
+    "tabs": {
+        "select":  "选择游戏",
+        "settings": "设置",
+        "about": "关于",
+        "exit": "退出"
+        
+    }
 }

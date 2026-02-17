@@ -1,6 +1,34 @@
 <brls:AppletFrame
     iconInterpolation="linear"
     footerHidden="false">
+    <brls:TabFrame
+        title="@i18n/beiklive/title"
+        icon="@res/img/mgba-96.png">
+
+        <brls:Tab 
+        label="@i18n/beiklive/tabs/select" >
+        
+        </brls:Tab>
+
+        <brls:Separator />
 
 
+        <brls:Tab 
+        label="@i18n/beiklive/tabs/settings" >
+
+        </brls:Tab>
+        <brls:Tab 
+        label="@i18n/beiklive/tabs/about" >
+        
+        </brls:Tab>
+        <brls:Separator />
+        <brls:Tab 
+        label="@i18n/beiklive/tabs/exit" >
+        
+        
+        
+        </brls:Tab>
+
+
+    </brls:TabFrame>
 </brls:AppletFrame>

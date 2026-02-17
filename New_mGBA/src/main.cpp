@@ -37,7 +37,7 @@ int main(int argc, char* argv[])
 
     brls::Application::createWindow("beiklive/title"_i18n);
 
-    brls::Application::getPlatform()->setThemeVariant(brls::ThemeVariant::DARK);
+    // brls::Application::getPlatform()->setThemeVariant(brls::ThemeVariant::DARK);
 
     // Have the application register an action on every activity that will quit when you press BUTTON_START
     brls::Application::setGlobalQuit(false);

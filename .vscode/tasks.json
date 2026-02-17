@@ -1,0 +1,56 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+		{
+			"label": "生成macos",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"-B",
+				"build_macos",
+				"-DCMAKE_BUILD_TYPE=Release",
+				"-DPLATFORM_DESKTOP=ON",
+				"-DBUNDLE_MACOS_APP=ON",
+				"-DUSE_GLFW=ON"
+			],
+			"group": {
+				"kind": "build"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "make编译",
+			"type": "shell",
+			"command": "make -C build_macos -j$(sysctl -n hw.ncpu)",
+			"group": {
+				"kind": "build"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "运行app",
+			"type": "shell",
+			"command": "open ./build_macos/New_mGBA.app",
+			"group": {
+				"kind": "test"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "构建并运行MacOS版本",
+			"type": "shell",
+			"command": "echo '全部任务已完成'",
+			"dependsOn": [
+				"生成macos",
+				"make编译",
+				"运行app"
+			],
+			"dependsOrder": "sequence",
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			}
+		}
+	]
+}

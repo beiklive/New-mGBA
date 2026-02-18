@@ -51,6 +51,45 @@
 				"kind": "build",
 				"isDefault": true
 			}
+		},
+		{
+			"label": "生成switch",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"-B",
+				"build_switch",
+				"-DCMAKE_BUILD_TYPE=Release",
+				"-DPLATFORM_SWITCH=ON",
+				"-DUSE_DEKO3D=ON"
+			],
+			"group": {
+				"kind": "build"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "make编译2",
+			"type": "shell",
+			"command": "make -C build_switch New_mGBA.nro -j$(nproc)",
+			"group": {
+				"kind": "build"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "构建Switch版本",
+			"type": "shell",
+			"command": "echo '全部任务已完成'",
+			"dependsOn": [
+				"生成switch",
+				"make编译2"
+			],
+			"dependsOrder": "sequence",
+			"problemMatcher": [],
+			"group": {
+				"kind": "build",
+			}
 		}
 	]
 }

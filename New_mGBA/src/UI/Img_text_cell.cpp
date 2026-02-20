@@ -9,6 +9,13 @@ Img_text_cell::Img_text_cell()
     this->inflateFromXMLRes("xml/mgba_xml/cell/Img_text_cell.xml");
 
 
+    // 映射属性
+    this->forwardXMLAttribute("image", this->image);
+    this->forwardXMLAttribute("imageWidth", this->image, "width");
+    this->forwardXMLAttribute("imageHeight", this->image, "height");
+    this->forwardXMLAttribute("caption", this->label, "text");
+
+
 }
 
 brls::View* Img_text_cell::create() 

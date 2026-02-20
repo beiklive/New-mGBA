@@ -2,26 +2,21 @@
 
 #include <borealis.hpp>
 
+
+#include "UI/Img_text_cell.hpp"
+
+
 class SelectGameTab : public brls::Box
 {
   public:
     SelectGameTab();
 
-    // BRLS_BIND(brls::RadioCell, radio, "radio");
-    // BRLS_BIND(brls::BooleanCell, boolean, "boolean");
-    // BRLS_BIND(brls::SelectorCell, selector, "selector");
-    // BRLS_BIND(brls::InputCell, input, "input");
-    // BRLS_BIND(brls::InputNumericCell, inputNumeric, "inputNumeric");
-    // BRLS_BIND(brls::DetailCell, ipAddress, "ipAddress");
-    // BRLS_BIND(brls::DetailCell, dnsServer, "dnsServer");
-    // BRLS_BIND(brls::BooleanCell, debug, "debug");
-    // BRLS_BIND(brls::BooleanCell, screenSaver, "screenSaver");
-    // BRLS_BIND(brls::BooleanCell, bottomBar, "bottomBar");
-    // BRLS_BIND(brls::BooleanCell, alwaysOnTop, "alwaysOnTop");
-    // BRLS_BIND(brls::BooleanCell, fps, "fps");
-    // BRLS_BIND(brls::SelectorCell, swapInterval, "swapInterval");
-    // BRLS_BIND(brls::SliderCell, slider, "slider");
-    // BRLS_BIND(brls::DetailCell, notify, "notify");
+
+    BRLS_BIND(Img_text_cell, select_file, "select-file");
+    BRLS_BIND(Img_text_cell, select_recent, "select-recent");
+    BRLS_BIND(Img_text_cell, select_favorites, "select-favorites");
+
+
 
     static brls::View* create();
 };

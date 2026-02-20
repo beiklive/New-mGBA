@@ -3,6 +3,7 @@
 #include <string>
 
 #include "UI/tab_select_game.hpp"
+#include "UI/Img_text_cell.hpp"
 
 #include "main_activity.hpp"
 
@@ -55,6 +56,7 @@ int main(int argc, char* argv[])
     brls::Application::setGlobalQuit(false);
     
     brls::Application::registerXMLView("SelectGameTab", SelectGameTab::create);
+    brls::Application::registerXMLView("Img_text_cell", Img_text_cell::create);
     
     
     

@@ -4,8 +4,11 @@
         "select":  "游戏",
         "settings": "设置",
         "about": "关于",
-        "exit": "退出",
-        "button_primary": "主按钮",
-        "select-file": "从文件列表选择"
+        "exit": "退出"
+    },
+    "select": {
+        "file": "从文件列表选择",
+        "recent": "最近游戏",
+        "favorites": "收藏列表"
     }
 }

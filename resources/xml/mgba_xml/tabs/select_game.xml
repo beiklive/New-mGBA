@@ -1,17 +1,14 @@
-<brls:Box
-    width="auto"
+<brls:Box width="auto"
     height="auto">
 
-    <brls:ScrollingFrame
-        width="auto"
+    <brls:ScrollingFrame width="auto"
         height="auto"
         axis="column"
         alignItems="stretch"
         scrollingBehavior="centered"
-        grow="1.0" >
+        grow="1.0">
 
-        <brls:Box
-            width="10000"
+        <brls:Box width="10000"
             height="auto"
             axis="column"
             alignItems="stretch"
@@ -20,40 +17,9 @@
             paddingBottom="@style/brls/sidebar/padding_bottom"
             paddingLeft="@style/brls/sidebar/padding_left">
 
-        <brls:DetailCell
-                    title="@i18n/beiklive/tabs/select-file"
-                    id="select-file"/>
-        <brls:DetailCell
-                    title="@i18n/beiklive/tabs/select-file"
-                    id="select-file"/>
-                            <brls:DetailCell
-                    title="@i18n/beiklive/tabs/select-file"
-                    id="select-file"/>
-                            <brls:DetailCell
-                    title="@i18n/beiklive/tabs/select-file"
-                    id="select-file"/>
-                            <brls:DetailCell
-                    title="@i18n/beiklive/tabs/select-file"
-                    id="select-file"/>
-                            <brls:DetailCell
-                    title="@i18n/beiklive/tabs/select-file"
-                    id="select-file"/>
-                            <brls:DetailCell
-                    title="@i18n/beiklive/tabs/select-file"
-                    id="select-file"/>
-                            <brls:DetailCell
-                    title="@i18n/beiklive/tabs/select-file"
-                    id="select-file"/>
-                            <brls:DetailCell
-                    title="@i18n/beiklive/tabs/select-file"
-                    id="select-file"/>
-                            <brls:DetailCell
-                    title="@i18n/beiklive/tabs/select-file"
-                    id="select-file"/>
-                            <brls:DetailCell
-                    title="@i18n/beiklive/tabs/select-file"
-                    id="select-file"/>
-
+            <Img_text_cell id="select-file"/>
+            <Img_text_cell id="select-recent"/>
+            <Img_text_cell id="select-favorites"/>
         </brls:Box>
     </brls:ScrollingFrame>
 </brls:Box>

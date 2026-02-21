@@ -1,5 +1,6 @@
 <brls:Box width="auto"
     height="auto"
+    id="img_text_cell_root"
     focusable="true"
     paddingTop="10"
     paddingBottom="10">

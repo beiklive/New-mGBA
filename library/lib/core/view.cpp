@@ -104,15 +104,15 @@ float View::getAlpha(bool child)
 NVGcolor View::a(NVGcolor color)
 {
     NVGcolor newColor = color; // copy
-    newColor.a *= this->getAlpha();
+        newColor.a *= this->getAlpha();
     return newColor;
 }
 
-NVGpaint View::a(NVGpaint paint)
+NVGpaint View::a(NVGpaint paint)        
 {
     NVGpaint newPaint = paint; // copy
-    newPaint.innerColor.a *= this->getAlpha();
-    newPaint.outerColor.a *= this->getAlpha();
+        newPaint.innerColor.a *= this->getAlpha();
+        newPaint.outerColor.a *= this->getAlpha();
     return newPaint;
 }
 
@@ -530,6 +530,12 @@ void View::setAlpha(float alpha)
     this->alpha = alpha;
 }
 
+void View::setHighlightAlphaTransparent(bool transparent, float alpha)
+{
+    this->isTransparentBackground = transparent;
+    this->backgroundImageAlpha = alpha;
+}
+
 void View::drawHighlight(NVGcontext* vg, Theme theme, float alpha, Style style, bool background)
 {
     if (Application::getInputType() == InputType::TOUCH)
@@ -582,7 +588,14 @@ void View::drawHighlight(NVGcontext* vg, Theme theme, float alpha, Style style, 
     {
         // Background
         NVGcolor highlightBackgroundColor = theme["brls/highlight/background"];
-        nvgFillColor(vg, RGBAf(highlightBackgroundColor.r, highlightBackgroundColor.g, highlightBackgroundColor.b, this->highlightAlpha));
+        if(this->isTransparentBackground)
+        {
+            nvgFillColor(vg, RGBAf(highlightBackgroundColor.r, highlightBackgroundColor.g, highlightBackgroundColor.b, backgroundImageAlpha));
+        }
+        else
+        {
+            nvgFillColor(vg, RGBAf(highlightBackgroundColor.r, highlightBackgroundColor.g, highlightBackgroundColor.b, this->highlightAlpha));
+        }
         nvgBeginPath(vg);
         nvgRoundedRect(vg, x, y, width, height, cornerRadius);
         nvgFill(vg);
@@ -2273,7 +2286,7 @@ void View::registerCommonAttributes()
     BRLS_REGISTER_ENUM_XML_ATTRIBUTE(
         "background", ViewBackground, this->setBackground,
         {
-            { "sidebar", ViewBackground::SIDEBAR },
+            { "sidebar", ViewBackground::NONE },
             { "backdrop", ViewBackground::BACKDROP },
             { "vertical_linear", ViewBackground::VERTICAL_LINEAR },
         });

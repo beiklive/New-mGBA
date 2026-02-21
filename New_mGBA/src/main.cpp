@@ -62,8 +62,8 @@ int main(int argc, char* argv[])
     auto mainActivity = new MainActivity();
     
     brls::Application::pushActivity(mainActivity);
-    mainActivity->setBackground("./resources/img/bg.png");
-    brls::Logger::info("Main activity pushed");
+    
+    mainActivity->setBackground("./resources/img/mh.png");
     // Run the app
     while (brls::Application::mainLoop())
         ;

@@ -16,6 +16,7 @@ Img_text_cell::Img_text_cell()
     this->forwardXMLAttribute("caption", this->label, "text");
 
 
+    this->getView("img_text_cell_root")->setHighlightAlphaTransparent(true, 0.0f); // 取消选中高亮背景
 }
 
 brls::View* Img_text_cell::create() 

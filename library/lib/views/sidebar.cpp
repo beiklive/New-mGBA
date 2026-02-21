@@ -28,6 +28,7 @@ namespace brls
 
 const std::string sidebarItemXML = R"xml(
     <brls:Box
+        id="brls/sidebar/item_root"
         width="auto"
         height="@style/brls/sidebar/item_height"
         focusable="true" >
@@ -96,6 +97,7 @@ SidebarItem::SidebarItem()
             default:
                 break;
         } }));
+    this->getView("brls/sidebar/item_root")->setHighlightAlphaTransparent(true, 0.0f); // 取消选中高亮背景
 }
 
 void SidebarItem::setActive(bool active)
@@ -157,7 +159,7 @@ Sidebar::Sidebar()
     Style style = Application::getStyle();
 
     this->setScrollingBehavior(ScrollingBehavior::CENTERED);
-    this->setBackground(ViewBackground::SIDEBAR);
+    this->setBackground(ViewBackground::NONE);
 
     // Create content box
     this->contentBox = new Box(Axis::COLUMN);

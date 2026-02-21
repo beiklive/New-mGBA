@@ -242,6 +242,7 @@ class View
     void drawWireframe(FrameContext* ctx, Rect frame);
     void drawLine(FrameContext* ctx, Rect frame);
 
+    bool isTransparentBackground = false;
     Animatable highlightAlpha   = 0.0f;
     float highlightPadding      = 0.0f;
     float highlightCornerRadius = 0.0f;
@@ -404,6 +405,9 @@ class View
 
     float getWidth();
     float getHeight(bool includeCollapse = true);
+
+
+    void setHighlightAlphaTransparent(bool transparent, float alpha);
 
     int   backgroundImage = 0;          // NanoVG 图片句柄，0 表示无效
     float backgroundImageAlpha = 1.0f;  // 图片透明度 (0.0 ~ 1.0)

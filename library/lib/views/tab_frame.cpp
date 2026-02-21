@@ -73,7 +73,6 @@ void TabFrame::addTab(std::string label, TabViewCreator creator)
         this->addView(newContent); // addView calls willAppear
 
         this->activeTab = newContent;
-
         newContent->registerAction(
             "hints/back"_i18n, BUTTON_B, [this](View* view) {
                 if (Application::getInputType() == InputType::TOUCH)

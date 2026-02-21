@@ -13,7 +13,7 @@ SelectGameTab::SelectGameTab()
     //     return true;
     // });
 
-    auto dismissAction = [this](View* view) {
+    auto dismissAction = [](View* view) {
         brls::Logger::info("Clicked on btn");
         return true;
     };
@@ -29,11 +29,29 @@ SelectGameTab::SelectGameTab()
 
     // select_favorites->setImage("img/tiles.png");
     // select_favorites->setTitle("beiklive/select/favorites"_i18n);
-
+    applyBackTheme(brls::Application::getPlatform()->getThemeVariant());
 
 }
 
 brls::View* SelectGameTab::create()
 {
     return new SelectGameTab();
+}
+
+
+void SelectGameTab::applyBackTheme(brls::ThemeVariant theme)
+{
+    switch (theme)
+    {
+        case brls::ThemeVariant::LIGHT:
+            select_file->setImage("img/ui/folder.png");
+            select_recent->setImage("img/ui/history.png");
+            select_favorites->setImage("img/ui/bookmark.png");
+            break;
+        case brls::ThemeVariant::DARK:
+            select_file->setImage("img/ui/folder_dark.png");
+            select_recent->setImage("img/ui/history_dark.png");
+            select_favorites->setImage("img/ui/bookmark_dark.png");
+            break;
+    }
 }

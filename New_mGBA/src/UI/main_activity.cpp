@@ -20,3 +20,11 @@ MainActivity::MainActivity()
 {
 
 }
+
+
+void MainActivity::setBackground(std::string path)
+{
+    auto view = this->getContentView();
+    view->setBackground(brls::ViewBackground::IMAGE);
+    view->backgroundImagePath = path;
+}

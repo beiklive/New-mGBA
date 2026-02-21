@@ -1,0 +1,9 @@
+{
+    "cmake.configureArgs": [
+                "-B",
+                "build_macos",
+                "-DPLATFORM_DESKTOP=ON",
+                "-DBUNDLE_MACOS_APP=ON",
+                "-DUSE_GLFW=ON"
+    ]
+}

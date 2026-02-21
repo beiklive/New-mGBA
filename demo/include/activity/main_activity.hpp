@@ -21,6 +21,9 @@
 class MainActivity : public brls::Activity
 {
   public:
+    void setBackground(std::string path);
+
+
     // Declare that the content of this activity is the given XML file
     CONTENT_FROM_XML_RES("activity/main.xml");
 };

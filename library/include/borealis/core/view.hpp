@@ -120,6 +120,7 @@ enum class ViewBackground
     BACKDROP,
     SHAPE_COLOR,
     VERTICAL_LINEAR,
+    IMAGE 
 };
 
 enum class AlignSelf
@@ -275,6 +276,7 @@ class View
     bool wireframeEnabled = false;
     bool clipsToBounds    = false;
 
+
     std::vector<std::shared_ptr<Action>> actions;
     std::vector<GestureRecognizer*> gestureRecognizers;
 
@@ -403,6 +405,10 @@ class View
     float getWidth();
     float getHeight(bool includeCollapse = true);
 
+    int   backgroundImage = 0;          // NanoVG 图片句柄，0 表示无效
+    float backgroundImageAlpha = 1.0f;  // 图片透明度 (0.0 ~ 1.0)
+    std::string backgroundImagePath;    // 图片文件路径，用于去重加载
+    std::string loadedImagePath;
     /**
     * Triggers a layout of the whole view tree. Must be called
     * after a yoga node property is changed.

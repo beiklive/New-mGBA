@@ -739,6 +739,40 @@ void View::drawBackground(NVGcontext* vg, FrameContext* ctx, Style style, Rect f
             nvgFill(vg);
             break;
         }
+        case ViewBackground::IMAGE:
+        {
+            // 检查路径是否发生变化（或图片尚未加载）
+            if (backgroundImagePath != loadedImagePath)
+            {
+                // 释放旧图片（如果有）
+                if (backgroundImage != 0) {
+                    nvgDeleteImage(vg, backgroundImage);
+                    backgroundImage = 0;
+                }
+                // 加载新图片（非空路径）
+                if (!backgroundImagePath.empty()) {
+                    backgroundImage = nvgCreateImage(vg, backgroundImagePath.c_str(), 0);
+                    // 可添加加载失败日志
+                }
+                // 记录已加载的路径
+                loadedImagePath = backgroundImagePath;
+            }
+
+            // 绘制图片（如果图片有效）
+            if (backgroundImage != 0)
+            {
+                nvgBeginPath(vg);
+                if (this->cornerRadius > 0.0f)
+                    nvgRoundedRect(vg, x, y, width, height, this->cornerRadius);
+                else
+                    nvgRect(vg, x, y, width, height);
+
+                NVGpaint imgPaint = nvgImagePattern(vg, x, y, width, height, 0.0f, backgroundImage, backgroundImageAlpha);
+                nvgFillPaint(vg, imgPaint);
+                nvgFill(vg);
+            }
+            break;
+        }
         case ViewBackground::NONE:
             break;
     }
@@ -1508,6 +1542,8 @@ std::string View::getCustomNavigationRouteId(FocusDirection direction)
 {
     return this->customFocusById[direction];
 }
+
+
 
 View::~View()
 {

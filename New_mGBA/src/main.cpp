@@ -1,7 +1,7 @@
 #include <borealis.hpp>
 #include <cstdlib>
 #include <string>
-
+#include <iostream>
 #include "UI/tab_select_game.hpp"
 #include "UI/Img_text_cell.hpp"
 
@@ -59,11 +59,11 @@ int main(int argc, char* argv[])
     brls::Application::registerXMLView("Img_text_cell", Img_text_cell::create);
     
     
+    auto mainActivity = new MainActivity();
     
-    
-    
-    brls::Application::pushActivity(new MainActivity());
-
+    brls::Application::pushActivity(mainActivity);
+    mainActivity->setBackground("./resources/img/bg.png");
+    brls::Logger::info("Main activity pushed");
     // Run the app
     while (brls::Application::mainLoop())
         ;

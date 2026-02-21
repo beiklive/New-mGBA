@@ -63,7 +63,12 @@ int main(int argc, char* argv[])
     
     brls::Application::pushActivity(mainActivity);
     
-    mainActivity->setBackground("./resources/img/pokemon.png");
+#if defined(SWITCH)
+mainActivity->setBackground("sdmc:/mGBA/backgrounds/pokemon.png");
+#else
+mainActivity->setBackground("./resources/img/pokemon.png");
+
+#endif
     // Run the app
     while (brls::Application::mainLoop())
         ;

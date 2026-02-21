@@ -7,6 +7,10 @@ class Img_text_cell : public brls::RecyclerCell
   public:
     Img_text_cell();
 
+    void onFocusGained() override;
+    void onFocusLost() override;
+
+    BRLS_BIND(brls::Rectangle, accent, "brls/sidebar/item_accent");
     BRLS_BIND(brls::Label, label, "title");
     BRLS_BIND(brls::Image, image, "image");
 

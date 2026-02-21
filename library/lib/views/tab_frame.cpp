@@ -49,9 +49,9 @@ TabFrame::TabFrame()
     this->inflateFromXMLString(tabFrameContentXML);
 }
 
-void TabFrame::addTab(std::string label, TabViewCreator creator)
+void TabFrame::addTab(std::string label, std::string image, TabViewCreator creator)
 {
-    this->sidebar->addItem(label, [this, creator](brls::View* view) {
+    this->sidebar->addItem(label, image, [this, creator](brls::View* view) {
         // Only trigger when the sidebar item gains focus
         if (!view->isFocused())
             return;
@@ -107,17 +107,19 @@ void TabFrame::handleXMLElement(tinyxml2::XMLElement* element)
     if (name == "brls:Tab")
     {
         const tinyxml2::XMLAttribute* labelAttribute = element->FindAttribute("label");
+        const tinyxml2::XMLAttribute* imageAttribute = element->FindAttribute("image");
 
         if (!labelAttribute)
             fatal("\"label\" attribute missing from \"" + name + "\" tab");
 
         std::string label = View::getStringXMLAttributeValue(labelAttribute->Value());
+        std::string image = imageAttribute ? View::getStringXMLAttributeValue(imageAttribute->Value()) : "";
 
         tinyxml2::XMLElement* viewElement = element->FirstChildElement();
 
         if (viewElement)
         {
-            this->addTab(label, [viewElement] {
+            this->addTab(label, image, [viewElement] {
                 return View::createFromXMLElement(viewElement);
             });
 
@@ -126,7 +128,7 @@ void TabFrame::handleXMLElement(tinyxml2::XMLElement* element)
         }
         else
         {
-            this->addTab(label, [] { return nullptr; });
+            this->addTab(label, image, [] { return nullptr; });
         }
     }
     else if (name == "brls:Separator")

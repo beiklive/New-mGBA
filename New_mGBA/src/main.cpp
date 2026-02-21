@@ -41,7 +41,7 @@ int main(int argc, char* argv[])
 
     brls::Application::createWindow("beiklive/title"_i18n);
 
-    brls::Application::getPlatform()->setThemeVariant(brls::ThemeVariant::DARK);
+    // brls::Application::getPlatform()->setThemeVariant(brls::ThemeVariant::DARK);
 
 
     
@@ -63,7 +63,7 @@ int main(int argc, char* argv[])
     
     brls::Application::pushActivity(mainActivity);
     
-    mainActivity->setBackground("./resources/img/pokemon.png");
+    mainActivity->setBackground("./resources/img/mh.png");
     // Run the app
     while (brls::Application::mainLoop())
         ;

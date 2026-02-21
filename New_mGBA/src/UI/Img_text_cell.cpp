@@ -33,3 +33,18 @@ void Img_text_cell::setImage(std::string res)
 {
     this->image->setImageFromRes(res);
 }
+
+
+void Img_text_cell::onFocusGained()
+{
+    RecyclerCell::onFocusGained();
+
+    this->accent->setVisibility(brls::Visibility::VISIBLE);
+}
+
+void Img_text_cell::onFocusLost()
+{
+    RecyclerCell::onFocusLost();
+
+    this->accent->setVisibility(brls::Visibility::INVISIBLE);
+}

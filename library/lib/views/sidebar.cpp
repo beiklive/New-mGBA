@@ -44,6 +44,15 @@ const std::string sidebarItemXML = R"xml(
             marginLeft="@style/brls/sidebar/item_accent_margin_sides"
             marginRight="@style/brls/sidebar/item_accent_margin_sides" />
 
+        <brls:Image id="brls/sidebar/item_image"
+            width="48px"
+            height="48px"
+            marginTop="@style/brls/sidebar/item_accent_margin_top_bottom"
+            marginBottom="@style/brls/sidebar/item_accent_margin_top_bottom"
+            marginLeft="@style/brls/sidebar/item_accent_margin_sides"
+            marginRight="@style/brls/sidebar/item_accent_margin_sides"/>
+
+
         <brls:Label
             id="brls/sidebar/item_label"
             width="auto"
@@ -64,6 +73,8 @@ SidebarItem::SidebarItem()
 
     this->registerStringXMLAttribute("label", [this](std::string value)
         { this->setLabel(value); });
+    this->registerStringXMLAttribute("image", [this](std::string value)
+        { this->setImage(value); });
 
     this->setFocusSound(SOUND_FOCUS_SIDEBAR);
 
@@ -113,11 +124,36 @@ void SidebarItem::setActive(bool active)
 
         this->accent->setVisibility(Visibility::VISIBLE);
         this->label->setTextColor(theme["brls/sidebar/active_item"]);
+        auto theme = brls::Application::getPlatform()->getThemeVariant();
+        if(!imageName.empty())
+        {
+            switch (theme)
+            {
+                case brls::ThemeVariant::LIGHT:
+                    this->image->setImageFromRes(imageName + "_light_active.png");
+                    break;
+                case brls::ThemeVariant::DARK:
+                    this->image->setImageFromRes(imageName + "_dark_active.png");
+                    break;
+            }
+        }
     }
     else
     {
         this->accent->setVisibility(Visibility::INVISIBLE);
         this->label->setTextColor(theme["brls/text"]);
+        auto theme = brls::Application::getPlatform()->getThemeVariant();
+        if(!imageName.empty())
+        {
+            switch (theme)        {
+                case brls::ThemeVariant::LIGHT:
+                    this->image->setImageFromRes(imageName + "_light.png");
+                    break;  
+                case brls::ThemeVariant::DARK:
+                    this->image->setImageFromRes(imageName + "_dark.png");
+                    break;
+            }
+        }
     }
 
     this->active = active;
@@ -154,6 +190,28 @@ void SidebarItem::setLabel(std::string label)
     this->label->setText(label);
 }
 
+void SidebarItem::setImage(std::string image)
+{
+    if(image.empty())
+    {
+        this->image->setVisibility(Visibility::INVISIBLE);
+        this->image->setWidth(0);
+        return;
+    }
+    auto theme = brls::Application::getPlatform()->getThemeVariant();
+    imageName = image;
+    switch (theme)
+    {
+        case brls::ThemeVariant::LIGHT:
+            this->image->setImageFromRes(imageName + "_light.png");
+            break;
+        case brls::ThemeVariant::DARK:
+            this->image->setImageFromRes(imageName + "_dark.png");
+            break;
+    }
+}
+
+
 Sidebar::Sidebar()
 {
     Style style = Application::getStyle();
@@ -174,11 +232,12 @@ Sidebar::Sidebar()
     this->setScrollingIndicatorVisible(false);
 }
 
-void Sidebar::addItem(std::string label, GenericEvent::Callback focusCallback)
+void Sidebar::addItem(std::string label, std::string image, GenericEvent::Callback focusCallback)
 {
     SidebarItem* item = new SidebarItem();
     item->setGroup(&this->group);
     item->setLabel(label);
+    item->setImage(image);
     item->getActiveEvent()->subscribe(focusCallback);
 
     this->contentBox->addView(item);

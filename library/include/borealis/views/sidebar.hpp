@@ -21,6 +21,7 @@
 #include <borealis/core/box.hpp>
 #include <borealis/views/label.hpp>
 #include <borealis/views/rectangle.hpp>
+#include <borealis/views/image.hpp>
 #include <borealis/views/scrolling_frame.hpp>
 
 namespace brls
@@ -58,6 +59,7 @@ class SidebarItem : public Box
     void setGroup(SidebarItemGroup* group);
 
     void setLabel(std::string label);
+    void setImage(std::string image);
 
     void setActive(bool active);
 
@@ -65,8 +67,9 @@ class SidebarItem : public Box
 
   private:
     BRLS_BIND(Rectangle, accent, "brls/sidebar/item_accent");
+    BRLS_BIND(Image, image, "brls/sidebar/item_image");
     BRLS_BIND(Label, label, "brls/sidebar/item_label");
-
+    std::string imageName;
     GenericEvent activeEvent;
 
     SidebarItemGroup* group;
@@ -83,7 +86,7 @@ class Sidebar : public ScrollingFrame
      * Adds an item to this sidebar. The given callback will be called
      * when the item becomes active.
      */
-    void addItem(std::string label, GenericEvent::Callback focusCallback);
+    void addItem(std::string label, std::string image,  GenericEvent::Callback focusCallback);
 
     SidebarItem* getItem(int position);
 

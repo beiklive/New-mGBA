@@ -5,6 +5,7 @@
         id="mainTabFrame">
 
         <brls:Tab label="@i18n/beiklive/tabs/select"
+            image="img/ui/home"
             id="select">
 
             <SelectGameTab />
@@ -14,14 +15,17 @@
         <brls:Separator />
 
 
-        <brls:Tab label="@i18n/beiklive/tabs/settings">
+        <brls:Tab label="@i18n/beiklive/tabs/settings"
+            image="img/ui/home">
 
         </brls:Tab>
-        <brls:Tab label="@i18n/beiklive/tabs/about">
+        <brls:Tab label="@i18n/beiklive/tabs/about"
+            image="img/ui/home">
 
         </brls:Tab>
         <brls:Separator />
-        <brls:Tab label="@i18n/beiklive/tabs/exit">
+        <brls:Tab label="@i18n/beiklive/tabs/exit"
+         >
 
 
 

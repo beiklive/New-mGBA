@@ -159,8 +159,8 @@ Sidebar::Sidebar()
     Style style = Application::getStyle();
 
     this->setScrollingBehavior(ScrollingBehavior::CENTERED);
-    this->setBackground(ViewBackground::NONE);
-
+    this->setBackground(ViewBackground::SIDEBAR);
+    this->setHighlightAlphaTransparent(true, 0.2f); // 取消选中高亮背景
     // Create content box
     this->contentBox = new Box(Axis::COLUMN);
 

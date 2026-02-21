@@ -699,13 +699,21 @@ void View::drawBackground(NVGcontext* vg, FrameContext* ctx, Style style, Rect f
 
             // Solid color
             nvgBeginPath(vg);
-            nvgFillColor(vg, a(sidebarColor));
+            if(this->isTransparentBackground)
+            {
+                sidebarColor.a = backgroundImageAlpha;
+                nvgFillColor(vg, sidebarColor);
+            }else
+            {
+                nvgFillColor(vg, a(sidebarColor));
+            }
             nvgRect(vg, x, y + backdropHeight, width, height - backdropHeight * 2);
             nvgFill(vg);
 
             //Borders gradient
             // Top
             NVGpaint topGradient = nvgLinearGradient(vg, x, y + backdropHeight, x, y, a(sidebarColor), TRANSPARENT);
+
             nvgBeginPath(vg);
             nvgFillPaint(vg, topGradient);
             nvgRect(vg, x, y, width, backdropHeight);
@@ -2286,7 +2294,7 @@ void View::registerCommonAttributes()
     BRLS_REGISTER_ENUM_XML_ATTRIBUTE(
         "background", ViewBackground, this->setBackground,
         {
-            { "sidebar", ViewBackground::NONE },
+            { "sidebar", ViewBackground::SIDEBAR },
             { "backdrop", ViewBackground::BACKDROP },
             { "vertical_linear", ViewBackground::VERTICAL_LINEAR },
         });

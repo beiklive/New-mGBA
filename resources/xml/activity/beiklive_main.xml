@@ -16,16 +16,16 @@
 
 
         <brls:Tab label="@i18n/beiklive/tabs/settings"
-            image="img/ui/home">
+            image="img/ui/settings">
 
         </brls:Tab>
         <brls:Tab label="@i18n/beiklive/tabs/about"
-            image="img/ui/home">
+            image="img/ui/help">
 
         </brls:Tab>
         <brls:Separator />
         <brls:Tab label="@i18n/beiklive/tabs/exit"
-         >
+            image="img/ui/exit">
 
 
 

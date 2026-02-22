@@ -44,8 +44,8 @@ RecyclerCell* DataSource::cellForRow(brls::RecyclerFrame* recycler, brls::IndexP
 
 void DataSource::didSelectRowAt(brls::RecyclerFrame* recycler, brls::IndexPath indexPath)
 {
+    // 暂时使用ListView来展示被点击的item，后续可以改成更合适的界面
     recycler->present(new ListView());
-    // recycler->present(new PokemonView(pokemons[indexPath.row]));
     brls::Logger::info("Item Index(" + std::to_string(indexPath.section) + ":" + std::to_string(indexPath.row) + ") selected.");
 }
 

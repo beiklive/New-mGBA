@@ -1,5 +1,5 @@
 #include "UI/tab_select_game.hpp"
-
+#include "UI/List_view.hpp"
 using namespace brls::literals;  // for _i18n
 
 SelectGameTab::SelectGameTab()
@@ -13,16 +13,18 @@ SelectGameTab::SelectGameTab()
     //     return true;
     // });
 
-    auto dismissAction = [](View* view) {
+    auto dismissAction = [this](View* view) {
         brls::Logger::info("Clicked on btn");
+        // ListView* lv = dynamic_cast<ListView*>(view);
+        // // view->present(lv);
+        // this->present(lv);
+
         return true;
     };
 
     select_file->registerClickAction(dismissAction);
 
 
-    // select_file->setImage("img/tiles.png");
-    // select_file->setTitle("beiklive/select/file"_i18n);
 
     // select_recent->setImage("img/tiles.png");
     // select_recent->setTitle("beiklive/select/recent"_i18n);

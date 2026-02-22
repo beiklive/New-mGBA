@@ -4,6 +4,7 @@
 #include <iostream>
 #include "UI/tab_select_game.hpp"
 #include "UI/Img_text_cell.hpp"
+#include "UI/List_view.hpp"
 
 #include "main_activity.hpp"
 
@@ -41,7 +42,7 @@ int main(int argc, char* argv[])
 
     brls::Application::createWindow("beiklive/title"_i18n);
 
-    brls::Application::getPlatform()->setThemeVariant(brls::ThemeVariant::DARK);
+    // brls::Application::getPlatform()->setThemeVariant(brls::ThemeVariant::DARK);
 
 
     
@@ -54,8 +55,7 @@ int main(int argc, char* argv[])
     
     // Have the application register an action on every activity that will quit when you press BUTTON_START
     brls::Application::setGlobalQuit(false);
-    
-    brls::Application::registerXMLView("SelectGameTab", SelectGameTab::create);
+    brls::Application::registerXMLView("ItemListView", ListView::create);
     brls::Application::registerXMLView("Img_text_cell", Img_text_cell::create);
     
     
@@ -66,7 +66,7 @@ int main(int argc, char* argv[])
 #if defined(SWITCH)
 mainActivity->setBackground("sdmc:/mGBA/backgrounds/pokemon.png");
 #else
-mainActivity->setBackground("./resources/img/pokemon.png");
+mainActivity->setBackground("./resources/img/bg2.png");
 
 #endif
     // Run the app

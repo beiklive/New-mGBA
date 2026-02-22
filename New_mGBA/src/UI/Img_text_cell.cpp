@@ -19,6 +19,7 @@ Img_text_cell::Img_text_cell()
     this->getView("img_text_cell_root")->setHighlightAlphaTransparent(true, 0.0f); // 取消选中高亮背景
 }
 
+
 brls::View* Img_text_cell::create() 
 {
     return new Img_text_cell();

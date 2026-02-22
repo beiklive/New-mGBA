@@ -8,7 +8,7 @@
             image="img/ui/home"
             id="select">
 
-            <SelectGameTab />
+            <ItemListView />
 
         </brls:Tab>
 
@@ -17,6 +17,7 @@
 
         <brls:Tab label="@i18n/beiklive/tabs/settings"
             image="img/ui/settings">
+            <ItemListView />
 
         </brls:Tab>
         <brls:Tab label="@i18n/beiklive/tabs/about"

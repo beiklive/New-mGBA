@@ -2,6 +2,8 @@
 
 #include <borealis.hpp>
 
+
+
 class Img_text_cell : public brls::RecyclerCell
 {
   public:

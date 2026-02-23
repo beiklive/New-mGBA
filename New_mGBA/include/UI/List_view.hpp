@@ -51,7 +51,6 @@ class DataSource
   private:
     std::string cell_name;
 
-
   public:
     std::vector<ImgTextCell> listItems;
 
@@ -114,4 +113,16 @@ class FileListView : public ListView
     FileListView();
     ~FileListView();
     static brls::View* create();
+
+    // 过滤函数，判断文件是否符合过滤条件， 符合条件返回 true，否则返回 false
+  bool FileFliter(std::string fileSuffix);
+  void ListCurrentDir(std::string path);
+
+  std::vector<std::string> filterList = {
+    "gba", "gbc", "gb", "zip", "png"
+  };
+
+  private:
+    bool isFilterEnabled = true;
+
 };

@@ -30,7 +30,7 @@
         {
             "label": "运行app",
             "type": "shell",
-            "command": "./build_macos/New_mGBA.app/Contents/MacOS/New_mGBA",
+            "command": "./build_macos/New_mGBA.app/Contents/MacOS/New_mGBA -d",
             "group": {
                 "kind": "test"
             },

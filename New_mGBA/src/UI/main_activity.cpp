@@ -29,24 +29,7 @@ void MainActivity::InitActivity()
     this->setBackground("./resources/img/bg2.png");
 #endif
 
-    this->clearListViewItems();
-    this->addListViewItem("beiklive/select/file"_i18n, "img/ui/folder.png");
-    this->addListViewItem("beiklive/select/recent"_i18n, "img/ui/history.png");
-    this->addListViewItem("beiklive/select/favorites"_i18n, "img/ui/bookmark.png");
-    this->applyListViewItems();
-}
 
-void MainActivity::clearListViewItems()
-{
-    homeListView->clearItems();
-}
-void MainActivity::addListViewItem(std::string title, std::string imageRes)
-{
-    homeListView->addItem(title, imageRes);
-}
-void MainActivity::applyListViewItems()
-{
-    homeListView->applyItems();
 }
 
 void MainActivity::setBackground(std::string path)

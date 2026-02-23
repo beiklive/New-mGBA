@@ -14,23 +14,6 @@
             paddingBottom="@style/brls/sidebar/padding_bottom"
             paddingLeft="@style/brls/sidebar/padding_left">
 
-            <Img_text_cell id="select-file"
-                image="@res/img/ui/folder.png"
-                caption="@i18n/beiklive/select/file"
-                imageWidth="44"
-                imageHeight="44" />
-
-            <Img_text_cell id="select-recent"
-                image="@res/img/ui/history.png"
-                caption="@i18n/beiklive/select/recent"
-                imageWidth="44"
-                imageHeight="44" />
-
-            <Img_text_cell id="select-favorites"
-                image="@res/img/ui/bookmark.png"
-                caption="@i18n/beiklive/select/favorites"
-                imageWidth="44"
-                imageHeight="44" />
 
         </brls:Box>
     </brls:ScrollingFrame>

@@ -29,7 +29,6 @@ int main(int argc, char* argv[])
             brls::Application::enableDebuggingView(true);
         }
     }
-            brls::Application::enableDebuggingView(true);
 
     brls::Platform::APP_LOCALE_DEFAULT = brls::LOCALE_AUTO;
 
@@ -44,18 +43,9 @@ int main(int argc, char* argv[])
 
     // brls::Application::getPlatform()->setThemeVariant(brls::ThemeVariant::DARK);
 
-
-    
-    
-    
-    
-    
-    
-    
-    
     // Have the application register an action on every activity that will quit when you press BUTTON_START
     brls::Application::setGlobalQuit(false);
-    brls::Application::registerXMLView("ListView", ListView::create);
+    brls::Application::registerXMLView("HomeMenuListView", HomeMenuListView::create);
     brls::Application::registerXMLView("Img_text_cell", Img_text_cell::create);
     
     

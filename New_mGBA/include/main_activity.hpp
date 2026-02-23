@@ -27,11 +27,7 @@ class MainActivity : public brls::Activity
     // Declare that the content of this activity is the given XML file
     CONTENT_FROM_XML_RES("activity/beiklive_main.xml");
 
-    void clearListViewItems();
-    void addListViewItem(std::string title, std::string imageRes);
-    void applyListViewItems();
-
-    BRLS_BIND(ListView, homeListView, "homeListView");
+    BRLS_BIND(HomeMenuListView, homeListView, "homeListView");
 
 
   private:

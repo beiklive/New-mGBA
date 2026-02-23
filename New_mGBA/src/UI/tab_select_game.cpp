@@ -43,17 +43,5 @@ brls::View* SelectGameTab::create()
 
 void SelectGameTab::applyBackTheme(brls::ThemeVariant theme)
 {
-    switch (theme)
-    {
-        case brls::ThemeVariant::LIGHT:
-            select_file->setImage("img/ui/folder.png");
-            select_recent->setImage("img/ui/history.png");
-            select_favorites->setImage("img/ui/bookmark.png");
-            break;
-        case brls::ThemeVariant::DARK:
-            select_file->setImage("img/ui/folder_dark.png");
-            select_recent->setImage("img/ui/history_dark.png");
-            select_favorites->setImage("img/ui/bookmark_dark.png");
-            break;
-    }
+
 }

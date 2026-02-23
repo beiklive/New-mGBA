@@ -3,6 +3,8 @@
 #include <borealis.hpp>
 
 #include <string>
+
+
 class ImgTextCell
 {
   public:
@@ -23,6 +25,11 @@ class RecyclerCell
 {
   public:
     RecyclerCell();
+
+    void onFocusGained() override;
+    void onFocusLost() override;
+
+
 
     BRLS_BIND(brls::Rectangle, accent, "brls/sidebar/item_accent");
     BRLS_BIND(brls::Label, label, "title");
@@ -56,5 +63,6 @@ class ListView : public brls::Box
 
     void addItem(std::string title, std::string imageRes);
     void clearItems();
+    void applyItems();
     
 };

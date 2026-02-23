@@ -55,20 +55,17 @@ int main(int argc, char* argv[])
     
     // Have the application register an action on every activity that will quit when you press BUTTON_START
     brls::Application::setGlobalQuit(false);
-    brls::Application::registerXMLView("ItemListView", ListView::create);
+    brls::Application::registerXMLView("ListView", ListView::create);
     brls::Application::registerXMLView("Img_text_cell", Img_text_cell::create);
     
     
     auto mainActivity = new MainActivity();
     
     brls::Application::pushActivity(mainActivity);
-    
-#if defined(SWITCH)
-mainActivity->setBackground("sdmc:/mGBA/backgrounds/pokemon.png");
-#else
-mainActivity->setBackground("./resources/img/bg2.png");
+    mainActivity->InitActivity();
 
-#endif
+
+
     // Run the app
     while (brls::Application::mainLoop())
         ;

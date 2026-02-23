@@ -17,14 +17,22 @@
 #pragma once
 
 #include <borealis.hpp>
-
+#include "UI/List_view.hpp"
 class MainActivity : public brls::Activity
 {
   public:
     MainActivity();
+    void InitActivity();
     void setBackground(std::string path);
     // Declare that the content of this activity is the given XML file
     CONTENT_FROM_XML_RES("activity/beiklive_main.xml");
+
+    void clearListViewItems();
+    void addListViewItem(std::string title, std::string imageRes);
+    void applyListViewItems();
+
+    BRLS_BIND(ListView, homeListView, "homeListView");
+
 
   private:
 };

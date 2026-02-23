@@ -8,7 +8,10 @@
             image="img/ui/home"
             id="select">
 
-            <ItemListView />
+            <ListView 
+                id="homeListView"
+            />
+
 
         </brls:Tab>
 
@@ -17,7 +20,7 @@
 
         <brls:Tab label="@i18n/beiklive/tabs/settings"
             image="img/ui/settings">
-            <ItemListView />
+
 
         </brls:Tab>
         <brls:Tab label="@i18n/beiklive/tabs/about"

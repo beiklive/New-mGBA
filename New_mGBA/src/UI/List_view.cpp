@@ -1,13 +1,11 @@
 #include "UI/List_view.hpp"
-#include <vector>
 
+#include <vector>
 
 #include "Utils/fileUtils.hpp"
 #include "Utils/strUtils.hpp"
 
-
-using namespace brls::literals;  // for _i18n
-
+using namespace brls::literals; // for _i18n
 
 #if defined(SWITCH)
 std::string G_CurrentDir = "/";
@@ -15,19 +13,16 @@ std::string G_CurrentDir = "/";
 std::string G_CurrentDir = "/Users/beiklive/Downloads";
 #endif
 
-
 RecyclerCell::RecyclerCell()
 {
     this->inflateFromXMLRes("xml/mgba_xml/cell/Img_text_cell.xml");
     this->getView("img_text_cell_root")->setHighlightAlphaTransparent(true, 0.0f); // 取消选中高亮背景
-
 }
 
 RecyclerCell* RecyclerCell::create()
 {
     return new RecyclerCell();
 }
-
 
 void RecyclerCell::onFocusGained()
 {
@@ -43,7 +38,6 @@ void RecyclerCell::onFocusLost()
     this->accent->setVisibility(brls::Visibility::INVISIBLE);
 }
 
-
 // DATA SOURCE
 
 int DataSource::numberOfSections(brls::RecyclerFrame* recycler)
@@ -55,8 +49,8 @@ int DataSource::numberOfRows(brls::RecyclerFrame* recycler, int section)
 {
     return listItems.size();
 }
-    
-std::string DataSource::titleForHeader(brls::RecyclerFrame* recycler, int section) 
+
+std::string DataSource::titleForHeader(brls::RecyclerFrame* recycler, int section)
 {
     return "";
 }
@@ -82,24 +76,49 @@ RecyclerCell* DataSource::cellForRow(brls::RecyclerFrame* recycler, brls::IndexP
 // 处理点击事件
 void DataSource::didSelectRowAt(brls::RecyclerFrame* recycler, brls::IndexPath indexPath)
 {
-    if(cell_name == CELL_NAME_HOME) {
-        if(indexPath.row == 0) {
+    if (cell_name == CELL_NAME_HOME)
+    {
+        if (indexPath.row == 0)
+        {
             FileListView* fileListView = new FileListView();
             fileListView->ListCurrentDir(G_CurrentDir);
             recycler->present(fileListView);
         }
     }
-    else if(cell_name == CELL_NAME_FILE) {
+    else if (cell_name == CELL_NAME_FILE)
+    {
         brls::Logger::info("File selected: " + listItems[indexPath.row].text);
-        std::string selectedPath = G_CurrentDir + "/" + listItems[indexPath.row].text;
-        auto pathType = beiklive::file::getPathType(selectedPath);
-        if (pathType == beiklive::file::PathType::Directory) {
+        if (indexPath.row == 0 && listItems[indexPath.row].text == "..")
+        {
+            // 返回上一级目录
+            std::string selectedPath = beiklive::file::getParentPath(G_CurrentDir);
+            if (selectedPath.empty())
+            {
+                selectedPath = "/";
+            }
             FileListView* fileListView = new FileListView();
             fileListView->ListCurrentDir(selectedPath);
             recycler->present(fileListView);
+            return;
+        }
+        else
+        {
+            if (G_CurrentDir == "/")
+            {
+                G_CurrentDir = "";
+            }
+            std::string selectedPath = G_CurrentDir + "/" + listItems[indexPath.row].text;
+            auto pathType            = beiklive::file::getPathType(selectedPath);
+            if (pathType == beiklive::file::PathType::Directory)
+            {
+                FileListView* fileListView = new FileListView();
+                fileListView->ListCurrentDir(selectedPath);
+                recycler->present(fileListView);
+            }
         }
     }
-    else  if(cell_name == CELL_NAME_SETTINGS) {
+    else if (cell_name == CELL_NAME_SETTINGS)
+    {
         brls::Logger::info("Item selected: " + listItems[indexPath.row].text);
     }
 }
@@ -109,9 +128,6 @@ void DataSource::setCellName(std::string name)
     this->cell_name = name;
 }
 
-
-
-
 ListView::ListView()
 {
     // Inflate the tab from the XML file
@@ -120,15 +136,12 @@ ListView::ListView()
     dataSource = new DataSource();
 
     brls::Logger::debug("ListView created.");
-
 }
 
 ListView::~ListView()
 {
     brls::Logger::debug("ListView destroyed.");
 }
-
-
 
 void ListView::setCellName(std::string name)
 {
@@ -138,7 +151,8 @@ void ListView::setCellName(std::string name)
 void ListView::applyItems()
 {
     recycler->estimatedRowHeight = 70;
-    recycler->registerCell(cell_name, []() { return RecyclerCell::create(); });
+    recycler->registerCell(cell_name, []()
+        { return RecyclerCell::create(); });
     dataSource->setCellName(cell_name);
     recycler->setDataSource(dataSource);
 }
@@ -154,7 +168,6 @@ void ListView::addItem(std::string title, std::string imageRes)
     dataSource->listItems.push_back(ImgTextCell(title, imageRes));
 }
 
-
 HomeMenuListView::HomeMenuListView()
 {
     this->setCellName(CELL_NAME_HOME);
@@ -164,7 +177,6 @@ HomeMenuListView::HomeMenuListView()
     this->addItem("beiklive/select/recent"_i18n, "img/ui/history");
     this->addItem("beiklive/select/favorites"_i18n, "img/ui/bookmark");
     this->applyItems();
-
 }
 
 HomeMenuListView::~HomeMenuListView()
@@ -175,8 +187,6 @@ brls::View* HomeMenuListView::create()
 {
     return new HomeMenuListView();
 }
-
-
 
 FileListView::FileListView()
 {
@@ -197,10 +207,12 @@ brls::View* FileListView::create()
 
 bool FileListView::FileFliter(std::string fileSuffix)
 {
-    if(isFilterEnabled)
+    if (isFilterEnabled)
     {
-        for(const std::string& suffix : filterList) {
-            if(beiklive::string::iequals(suffix, fileSuffix)) {
+        for (const std::string& suffix : filterList)
+        {
+            if (beiklive::string::iequals(suffix, fileSuffix))
+            {
                 return true;
             }
         }
@@ -211,46 +223,58 @@ bool FileListView::FileFliter(std::string fileSuffix)
 
 void FileListView::ListCurrentDir(std::string path)
 {
+
     G_CurrentDir = path;
+    brls::Logger::debug("Current directory: " + G_CurrentDir);
+
     std::vector<std::string> files = beiklive::file::listDir(G_CurrentDir);
 
     this->clearItems();
-
-    for (const std::string& file : files) {
+    if (G_CurrentDir != "/")
+    {
+        this->addItem("..", "img/ui/folder");
+    }
+    for (const std::string& file : files)
+    {
         std::string fileName = beiklive::string::extractFileName(file);
         std::string iconPath;
-        bool shouldAdd = true;   // 默认添加
+        bool shouldAdd = true; // 默认添加
 
         auto pathType = beiklive::file::getPathType(file);
-        if (pathType == beiklive::file::PathType::Directory) {
+        if (pathType == beiklive::file::PathType::Directory)
+        {
             iconPath = "img/ui/folder";
         }
-        else if (pathType == beiklive::file::PathType::File) {
+        else if (pathType == beiklive::file::PathType::File)
+        {
             std::string suffix = beiklive::string::getFileSuffix(fileName);
-            if (!this->FileFliter(suffix)) {
-                shouldAdd = false;   // 过滤器拒绝，不添加
-            } else {
+            if (!this->FileFliter(suffix))
+            {
+                shouldAdd = false; // 过滤器拒绝，不添加
+            }
+            else
+            {
                 // 根据后缀选择对应图标
                 if (beiklive::string::iequals(suffix, "gba"))
                     iconPath = "img/file/gba";
-                else if (beiklive::string::iequals(suffix, "gb"))
+                else if (beiklive::string::iequals(suffix, "gb")
+                    || beiklive::string::iequals(suffix, "gbc"))
                     iconPath = "img/file/gb";
                 else if (beiklive::string::iequals(suffix, "zip"))
                     iconPath = "img/file/zip";
-                else if (beiklive::string::iequals(suffix, "png") ||
-                        beiklive::string::iequals(suffix, "jpg") ||
-                        beiklive::string::iequals(suffix, "jpeg") ||
-                        beiklive::string::iequals(suffix, "gif"))
+                else if (beiklive::string::iequals(suffix, "png") || beiklive::string::iequals(suffix, "jpg") || beiklive::string::iequals(suffix, "jpeg") || beiklive::string::iequals(suffix, "gif"))
                     iconPath = "img/file/image";
                 else
                     iconPath = "img/file/file";
             }
         }
-        else {  // 其他路径类型（如未知）
+        else
+        { // 其他路径类型（如未知）
             iconPath = "img/file/file";
         }
 
-        if (shouldAdd) {
+        if (shouldAdd)
+        {
             this->addItem(fileName, iconPath);
         }
     }

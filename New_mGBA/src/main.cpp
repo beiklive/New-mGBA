@@ -65,5 +65,6 @@ int main(int argc, char* argv[])
 }
 
 #ifdef __WINRT__
+
 #include <borealis/core/main.hpp>
 #endif

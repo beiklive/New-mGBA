@@ -15,7 +15,7 @@ using namespace brls::literals; // for _i18n
 #if defined(SWITCH)
 std::string G_CurrentDir = "/";
 #else
-std::string G_CurrentDir = "/Users/beiklive/Downloads";
+std::string G_CurrentDir = "/Users/beiklive";
 #endif
 
 RecyclerCell::RecyclerCell()
@@ -91,6 +91,7 @@ void DataSource::didSelectRowAt(brls::RecyclerFrame* recycler, brls::IndexPath i
         {
             FileListView* fileListView = new FileListView();
             fileListView->ListCurrentDir(G_CurrentDir);
+            fileListView->applyItems();
             recycler->present(fileListView);
         }
     }
@@ -107,10 +108,10 @@ void DataSource::didSelectRowAt(brls::RecyclerFrame* recycler, brls::IndexPath i
             {
                 selectedPath = "/";
             }
+            // brls::Logger::info("target path: " + selectedPath);
             FileView->ListCurrentDir(selectedPath);
             this->listItems = FileView->getItems(); // 更新数据源的列表项
             recycler->reloadData(); // 刷新 RecyclerFrame 显示新的列表项
-            recycler->selectRowAt(brls::IndexPath(0, 0), false); // 选中返回上一级目录的项
             return;
         }
         else
@@ -126,7 +127,6 @@ void DataSource::didSelectRowAt(brls::RecyclerFrame* recycler, brls::IndexPath i
                 FileView->ListCurrentDir(selectedPath);
                 this->listItems = FileView->getItems(); // 更新数据源的列表项
                 recycler->reloadData(); // 刷新 RecyclerFrame 显示新的列表项
-                recycler->selectRowAt(brls::IndexPath(0, 0), false); // 选中返回上一级目录的项
 
             }
         }
@@ -182,6 +182,7 @@ void ListView::clearItems()
 }
 void ListView::addItem(std::string title, std::string imageRes)
 {
+    brls::Logger::debug("Adding item: " + title + ", " + imageRes);
     dataSource->listItems.push_back(ImgTextCell(title, imageRes));
 }
 
@@ -242,7 +243,7 @@ void FileListView::ListCurrentDir(std::string path)
 {
 
     G_CurrentDir = path;
-    brls::Logger::debug("Current directory: " + G_CurrentDir);
+    brls::Logger::debug("target directory: " + G_CurrentDir);
 
     std::vector<std::string> files = beiklive::file::listDir(G_CurrentDir);
 
@@ -295,5 +296,4 @@ void FileListView::ListCurrentDir(std::string path)
             this->addItem(fileName, iconPath);
         }
     }
-    this->applyItems();
 }

@@ -44,13 +44,13 @@ class RecyclerCell
     static RecyclerCell* create();
 };
 
-
+class FileListView;
 class DataSource
     : public brls::RecyclerDataSource
 {
   private:
+    FileListView* FileView;
     std::string cell_name;
-
   public:
     std::vector<ImgTextCell> listItems;
 
@@ -77,13 +77,14 @@ class ListView : public brls::Box
 
     
     BRLS_BIND(brls::RecyclerFrame, recycler, "recycler");
+    DataSource* dataSource;
 
+    std::vector<ImgTextCell> getItems();
     void setCellName(std::string name);
     void addItem(std::string title, std::string imageRes);
     void clearItems();
     void applyItems();
   private:
-    DataSource* dataSource;
     std::string cell_name;
     
 };

@@ -7,6 +7,11 @@
 
 using namespace brls::literals; // for _i18n
 
+// FileListView fileListViewA;
+// FileListView fileListViewB;
+
+
+
 #if defined(SWITCH)
 std::string G_CurrentDir = "/";
 #else
@@ -76,6 +81,10 @@ RecyclerCell* DataSource::cellForRow(brls::RecyclerFrame* recycler, brls::IndexP
 // 处理点击事件
 void DataSource::didSelectRowAt(brls::RecyclerFrame* recycler, brls::IndexPath indexPath)
 {
+    if(FileView == nullptr)
+    {
+        FileView = new FileListView();
+    }
     if (cell_name == CELL_NAME_HOME)
     {
         if (indexPath.row == 0)
@@ -88,6 +97,8 @@ void DataSource::didSelectRowAt(brls::RecyclerFrame* recycler, brls::IndexPath i
     else if (cell_name == CELL_NAME_FILE)
     {
         brls::Logger::info("File selected: " + listItems[indexPath.row].text);
+        brls::Logger::info("G_CurrentDir: " + G_CurrentDir);
+
         if (indexPath.row == 0 && listItems[indexPath.row].text == "..")
         {
             // 返回上一级目录
@@ -96,9 +107,10 @@ void DataSource::didSelectRowAt(brls::RecyclerFrame* recycler, brls::IndexPath i
             {
                 selectedPath = "/";
             }
-            FileListView* fileListView = new FileListView();
-            fileListView->ListCurrentDir(selectedPath);
-            recycler->present(fileListView);
+            FileView->ListCurrentDir(selectedPath);
+            this->listItems = FileView->getItems(); // 更新数据源的列表项
+            recycler->reloadData(); // 刷新 RecyclerFrame 显示新的列表项
+            recycler->selectRowAt(brls::IndexPath(0, 0), false); // 选中返回上一级目录的项
             return;
         }
         else
@@ -111,9 +123,11 @@ void DataSource::didSelectRowAt(brls::RecyclerFrame* recycler, brls::IndexPath i
             auto pathType            = beiklive::file::getPathType(selectedPath);
             if (pathType == beiklive::file::PathType::Directory)
             {
-                FileListView* fileListView = new FileListView();
-                fileListView->ListCurrentDir(selectedPath);
-                recycler->present(fileListView);
+                FileView->ListCurrentDir(selectedPath);
+                this->listItems = FileView->getItems(); // 更新数据源的列表项
+                recycler->reloadData(); // 刷新 RecyclerFrame 显示新的列表项
+                recycler->selectRowAt(brls::IndexPath(0, 0), false); // 选中返回上一级目录的项
+
             }
         }
     }
@@ -134,7 +148,6 @@ ListView::ListView()
     this->inflateFromXMLRes("xml/mgba_xml/view/list_view.xml");
 
     dataSource = new DataSource();
-
     brls::Logger::debug("ListView created.");
 }
 
@@ -146,6 +159,10 @@ ListView::~ListView()
 void ListView::setCellName(std::string name)
 {
     cell_name = name;
+}
+std::vector<ImgTextCell> ListView::getItems()
+{
+    return dataSource->listItems;
 }
 
 void ListView::applyItems()

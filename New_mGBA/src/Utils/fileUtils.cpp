@@ -6,7 +6,7 @@ namespace fs = std::filesystem;
 
 std::vector<std::string> listDir(std::string path)
 {
-    return listDir(path, SortBy::NameAsc);
+    return listDir(path, SortBy::None);
 }
 
 std::vector<std::string> listDir(std::string path, SortBy sort_by)

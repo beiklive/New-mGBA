@@ -10,7 +10,6 @@
 #define CELL_NAME_FILE "FileCell"
 
 
-
 class ImgTextCell
 {
   public:

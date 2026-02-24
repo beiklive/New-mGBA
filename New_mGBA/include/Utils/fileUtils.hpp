@@ -50,4 +50,5 @@ PathType getPathType(const std::string& path);
 
 std::string getParentPath(const std::string& path);
 
+bool is_root_directory(const std::string& path_str);
 } // namespace beiklive

@@ -131,4 +131,22 @@ std::string getParentPath(const std::string& path)
     return parent.string();
 }
 
+
+bool is_root_directory(const std::string& path_str) {
+    if (path_str.empty()) return false;  // 空字符串肯定不是根目录
+
+    try {
+        std::filesystem::path p(path_str);
+        // 规范化路径，移除多余的 '.'、'..' 和分隔符
+        std::filesystem::path norm = p.lexically_normal();
+
+        // 必须包含根目录组件，且相对路径部分为空
+        return norm.has_root_directory() && norm.relative_path().empty();
+    } catch (const std::exception&) {
+        // 如果路径格式非法（例如含有无效字符），返回 false
+        return false;
+    }
+}
+
+
 } // namespace beiklive

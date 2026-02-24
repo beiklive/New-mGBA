@@ -13,7 +13,7 @@ SelectGameTab::SelectGameTab()
     //     return true;
     // });
 
-    auto dismissAction = [this](View* view) {
+    auto dismissAction = [](View* view) {
         brls::Logger::info("Clicked on btn");
         // ListView* lv = dynamic_cast<ListView*>(view);
         // // view->present(lv);

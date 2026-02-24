@@ -12,12 +12,12 @@ using namespace brls::literals; // for _i18n
 
 std::vector<FileListView*> fileViewStack; // 用于保存 FileListView 的栈
 
-
 #if defined(SWITCH)
-std::string G_CurrentDir = "/";
+#define ROOT_PATH "/"
 #else
-std::string G_CurrentDir = "/Users/beiklive";
+#define ROOT_PATH "/Users/beiklive"
 #endif
+std::string G_CurrentDir = ROOT_PATH;
 
 RecyclerCell::RecyclerCell()
 {
@@ -82,15 +82,17 @@ RecyclerCell* DataSource::cellForRow(brls::RecyclerFrame* recycler, brls::IndexP
 // 处理点击事件
 void DataSource::didSelectRowAt(brls::RecyclerFrame* recycler, brls::IndexPath indexPath)
 {
+    FileListView* fileListView = nullptr;
     if (cell_name == CELL_NAME_HOME)
     {
         if (indexPath.row == 0)
         {
-            FileListView* fileListView = new FileListView();
+            fileViewStack.clear(); // 清空栈
+            G_CurrentDir = ROOT_PATH;
+            fileListView = new FileListView();
+
             fileListView->ListCurrentDir(G_CurrentDir);
             fileListView->applyItems();
-            recycler->present(fileListView);
-            fileViewStack.push_back(fileListView); // 将新的 FileListView 添加到栈顶
         }
     }
     else if (cell_name == CELL_NAME_FILE)
@@ -106,18 +108,15 @@ void DataSource::didSelectRowAt(brls::RecyclerFrame* recycler, brls::IndexPath i
             {
                 selectedPath = "/";
             }
-            FileListView* fileListView = new FileListView();
-            fileListView->ListCurrentDir(selectedPath);
+            G_CurrentDir = selectedPath;
+            fileListView = new FileListView();
+            fileListView->ListCurrentDir(G_CurrentDir);
             fileViewStack[fileViewStack.size() - 1]->recycler->dismiss(
-                [this]()
+                []()
                 {
                     brls::Logger::debug("pre FileListView dismissed.");
-                }
-            );
+                });
             fileListView->applyItems();
-            fileViewStack.push_back(fileListView); // 将新的 FileListView 添加到栈顶
-            recycler->present(fileListView);
-            return;
         }
         else
         {
@@ -129,17 +128,15 @@ void DataSource::didSelectRowAt(brls::RecyclerFrame* recycler, brls::IndexPath i
             auto pathType            = beiklive::file::getPathType(selectedPath);
             if (pathType == beiklive::file::PathType::Directory)
             {
-                FileListView* fileListView = new FileListView();
-                fileListView->ListCurrentDir(selectedPath);
+                G_CurrentDir = selectedPath;
+                fileListView = new FileListView();
+                fileListView->ListCurrentDir(G_CurrentDir);
                 fileViewStack[fileViewStack.size() - 1]->recycler->dismiss(
-                [this]()
-                {
-                    brls::Logger::debug("pre FileListView dismissed.");
-                }
-            );
+                    []()
+                    {
+                        brls::Logger::debug("pre FileListView dismissed.");
+                    });
                 fileListView->applyItems();
-                fileViewStack.push_back(fileListView); // 将新的 FileListView 添加到栈顶
-                recycler->present(fileListView);
             }
         }
     }
@@ -147,6 +144,37 @@ void DataSource::didSelectRowAt(brls::RecyclerFrame* recycler, brls::IndexPath i
     {
         brls::Logger::info("Item selected: " + listItems[indexPath.row].text);
     }
+
+    if (fileListView != nullptr)
+    {
+
+        if (!beiklive::file::is_root_directory(G_CurrentDir))
+        {
+            fileListView->registerAction("beiklive/hints/UP"_i18n, brls::BUTTON_B, [recycler](brls::View* view)
+                {        
+                std::string selectedPath = beiklive::file::getParentPath(G_CurrentDir);
+                if (selectedPath.empty())
+                {
+                    selectedPath = "/";
+                }
+                G_CurrentDir               = selectedPath;
+                FileListView* fileListView = new FileListView();
+                fileListView->ListCurrentDir(G_CurrentDir);
+                fileViewStack[fileViewStack.size() - 1]->recycler->dismiss(
+                    []()
+                    {
+                        brls::Logger::debug("pre FileListView dismissed.");
+                    });
+                fileListView->applyItems();
+                fileViewStack.push_back(fileListView); // 将新的 FileListView 添加到栈顶
+                recycler->present(fileListView);
+                
+                return true; }, false, false, brls::SOUND_CLICK);
+        }
+        fileViewStack.push_back(fileListView); // 将新的 FileListView 添加到栈顶
+        recycler->present(fileListView);
+    }
+    return;
 }
 
 void DataSource::setCellName(std::string name)
@@ -207,10 +235,12 @@ HomeMenuListView::HomeMenuListView()
     this->addItem("beiklive/select/recent"_i18n, "img/ui/history");
     this->addItem("beiklive/select/favorites"_i18n, "img/ui/bookmark");
     this->applyItems();
+    brls::Logger::debug("HomeMenuListView created.");
 }
 
 HomeMenuListView::~HomeMenuListView()
 {
+    brls::Logger::debug("HomeMenuListView destroyed.");
 }
 
 brls::View* HomeMenuListView::create()
@@ -221,6 +251,35 @@ brls::View* HomeMenuListView::create()
 FileListView::FileListView()
 {
     this->setCellName(CELL_NAME_FILE);
+    brls::Logger::debug("FileCell G_CurrentDir: " + G_CurrentDir);
+    getAppletFrameItem()->title = G_CurrentDir;
+
+    if (beiklive::file::is_root_directory(G_CurrentDir))
+    {
+        this->registerAction("beiklive/hints/back"_i18n, brls::BUTTON_B, [](brls::View* view)
+            {
+        brls::Logger::debug("Menu button pressed.");
+            fileViewStack[fileViewStack.size() - 1]->recycler->dismiss(
+            []()
+            {
+                brls::Logger::debug("pre FileListView dismissed.");
+            });
+        return true; }, false, false, brls::SOUND_CLICK);
+    }
+    else
+    {
+
+        this->registerAction("beiklive/hints/back"_i18n, brls::BUTTON_START, [](brls::View* view)
+            {
+            // 处理按键
+            fileViewStack[fileViewStack.size() - 1]->recycler->dismiss(
+            []()
+            {
+                brls::Logger::debug("pre FileListView dismissed.");
+            });
+            brls::Logger::debug("Menu button pressed.");
+            return true; }, false, false, brls::SOUND_CLICK);
+    }
 
     brls::Logger::debug("FileListView created.");
 }

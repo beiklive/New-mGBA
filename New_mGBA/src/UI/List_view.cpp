@@ -10,6 +10,7 @@ using namespace brls::literals; // for _i18n
 // FileListView fileListViewA;
 // FileListView fileListViewB;
 
+std::vector<FileListView*> fileViewStack; // 用于保存 FileListView 的栈
 
 
 #if defined(SWITCH)
@@ -81,10 +82,6 @@ RecyclerCell* DataSource::cellForRow(brls::RecyclerFrame* recycler, brls::IndexP
 // 处理点击事件
 void DataSource::didSelectRowAt(brls::RecyclerFrame* recycler, brls::IndexPath indexPath)
 {
-    if(FileView == nullptr)
-    {
-        FileView = new FileListView();
-    }
     if (cell_name == CELL_NAME_HOME)
     {
         if (indexPath.row == 0)
@@ -93,11 +90,12 @@ void DataSource::didSelectRowAt(brls::RecyclerFrame* recycler, brls::IndexPath i
             fileListView->ListCurrentDir(G_CurrentDir);
             fileListView->applyItems();
             recycler->present(fileListView);
+            fileViewStack.push_back(fileListView); // 将新的 FileListView 添加到栈顶
         }
     }
     else if (cell_name == CELL_NAME_FILE)
     {
-        brls::Logger::info("File selected: " + listItems[indexPath.row].text);
+        brls::Logger::info("File selected: " + listItems[indexPath.row].text + " at index " + std::to_string(indexPath.row) + " at section " + std::to_string(indexPath.section));
         brls::Logger::info("G_CurrentDir: " + G_CurrentDir);
 
         if (indexPath.row == 0 && listItems[indexPath.row].text == "..")
@@ -108,10 +106,17 @@ void DataSource::didSelectRowAt(brls::RecyclerFrame* recycler, brls::IndexPath i
             {
                 selectedPath = "/";
             }
-            // brls::Logger::info("target path: " + selectedPath);
-            FileView->ListCurrentDir(selectedPath);
-            this->listItems = FileView->getItems(); // 更新数据源的列表项
-            recycler->reloadData(); // 刷新 RecyclerFrame 显示新的列表项
+            FileListView* fileListView = new FileListView();
+            fileListView->ListCurrentDir(selectedPath);
+            fileViewStack[fileViewStack.size() - 1]->recycler->dismiss(
+                [this]()
+                {
+                    brls::Logger::debug("pre FileListView dismissed.");
+                }
+            );
+            fileListView->applyItems();
+            fileViewStack.push_back(fileListView); // 将新的 FileListView 添加到栈顶
+            recycler->present(fileListView);
             return;
         }
         else
@@ -124,10 +129,17 @@ void DataSource::didSelectRowAt(brls::RecyclerFrame* recycler, brls::IndexPath i
             auto pathType            = beiklive::file::getPathType(selectedPath);
             if (pathType == beiklive::file::PathType::Directory)
             {
-                FileView->ListCurrentDir(selectedPath);
-                this->listItems = FileView->getItems(); // 更新数据源的列表项
-                recycler->reloadData(); // 刷新 RecyclerFrame 显示新的列表项
-
+                FileListView* fileListView = new FileListView();
+                fileListView->ListCurrentDir(selectedPath);
+                fileViewStack[fileViewStack.size() - 1]->recycler->dismiss(
+                [this]()
+                {
+                    brls::Logger::debug("pre FileListView dismissed.");
+                }
+            );
+                fileListView->applyItems();
+                fileViewStack.push_back(fileListView); // 将新的 FileListView 添加到栈顶
+                recycler->present(fileListView);
             }
         }
     }

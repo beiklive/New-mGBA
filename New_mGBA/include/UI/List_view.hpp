@@ -49,7 +49,6 @@ class DataSource
     : public brls::RecyclerDataSource
 {
   private:
-    FileListView* FileView;
     std::string cell_name;
   public:
     std::vector<ImgTextCell> listItems;

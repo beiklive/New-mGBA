@@ -24,7 +24,9 @@ MainActivity::MainActivity()
 void MainActivity::InitActivity()
 {
 #if defined(SWITCH)
-    this->setBackground("sdmc:/mGBA/backgrounds/pokemon.png");
+    brls::Application::enableDebuggingView(true);
+    brls::Logger::setLogLevel(brls::LogLevel::LOG_DEBUG);
+    this->setBackground("sdmc:/mGBA/backgrounds/bg2.png");
 #else
     this->setBackground("./resources/img/bg2.png");
 #endif

@@ -8,6 +8,18 @@
 
 #include "main_activity.hpp"
 
+#if defined(IMPORT_MGBALIB)
+#include <mgba/core/blip_buf.h>
+#include <mgba/core/core.h>
+#include <mgba/internal/gb/video.h>
+#include <mgba/internal/gba/audio.h>
+#include <mgba/internal/gba/input.h>
+#include <mgba-util/gui.h>
+#include <mgba-util/gui/font.h>
+#include <mgba-util/gui/menu.h>
+#include <mgba-util/vfs.h>
+#endif
+
 
 #if defined(BOREALIS_USE_OPENGL)
 // Needed for the OpenGL driver to work
@@ -29,6 +41,7 @@ int main(int argc, char* argv[])
             brls::Application::enableDebuggingView(true);
         }
     }
+
 
     brls::Platform::APP_LOCALE_DEFAULT = brls::LOCALE_AUTO;
 
@@ -53,7 +66,6 @@ int main(int argc, char* argv[])
     
     brls::Application::pushActivity(mainActivity);
     mainActivity->InitActivity();
-
 
 
     // Run the app

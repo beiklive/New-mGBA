@@ -52,8 +52,30 @@ list(APPEND APP_PLATFORM_LIB ${CMAKE_THREAD_LIBS_INIT})
 # file(GLOB_RECURSE MAIN_SRC demo/*.cpp)
 
 # New_mGBA 相关=============
+option(IMPORT_MGBALIB "build for mGBA" ON)
+
 list(APPEND APP_PLATFORM_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/New_mGBA/include)
 file(GLOB_RECURSE MAIN_SRC New_mGBA/src/*.cpp)
+
+if (IMPORT_MGBALIB)
+    message(STATUS "Using mgbalib")
+    set(MGBALIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/mgbalib)
+    set(MGBALIB_INCLUDE_DIR ${MGBALIB_DIR}/include)
+
+    if (PLATFORM_SWITCH)
+        set(MGBALIB_LIB ${MGBALIB_DIR}/libmgba.a)
+    elseif (PLATFORM_DESKTOP)
+        if (BUNDLE_MACOS_APP)
+            set(MGBALIB_LIB ${MGBALIB_DIR}/libmgba.dylib)
+        endif()
+    endif()
+
+    list(APPEND APP_PLATFORM_INCLUDE ${MGBALIB_INCLUDE_DIR})
+    list(APPEND APP_PLATFORM_LIB ${MGBALIB_LIB})
+else()
+    message(STATUS "Using New_mGBA")
+endif()
+
 # New_mGBA 相关=============
 
 

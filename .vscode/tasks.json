@@ -61,7 +61,7 @@
                 "build_switch",
                 "-DCMAKE_BUILD_TYPE=Release",
                 "-DPLATFORM_SWITCH=ON",
-                "-DUSE_DEKO3D=ON"
+                "-DUSE_GLFW=ON"
             ],
             "group": {
                 "kind": "build"

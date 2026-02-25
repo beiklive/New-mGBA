@@ -147,30 +147,6 @@ void DataSource::didSelectRowAt(brls::RecyclerFrame* recycler, brls::IndexPath i
 
     if (fileListView != nullptr)
     {
-
-        if (!beiklive::file::is_root_directory(G_CurrentDir))
-        {
-            fileListView->registerAction("beiklive/hints/UP"_i18n, brls::BUTTON_B, [recycler](brls::View* view)
-                {        
-                std::string selectedPath = beiklive::file::getParentPath(G_CurrentDir);
-                if (selectedPath.empty())
-                {
-                    selectedPath = "/";
-                }
-                G_CurrentDir               = selectedPath;
-                FileListView* fileListView = new FileListView();
-                fileListView->ListCurrentDir(G_CurrentDir);
-                fileViewStack[fileViewStack.size() - 1]->recycler->dismiss(
-                    []()
-                    {
-                        brls::Logger::debug("pre FileListView dismissed.");
-                    });
-                fileListView->applyItems();
-                fileViewStack.push_back(fileListView); // 将新的 FileListView 添加到栈顶
-                recycler->present(fileListView);
-                
-                return true; }, false, false, brls::SOUND_CLICK);
-        }
         fileViewStack.push_back(fileListView); // 将新的 FileListView 添加到栈顶
         recycler->present(fileListView);
     }
@@ -254,33 +230,6 @@ FileListView::FileListView()
     brls::Logger::debug("FileCell G_CurrentDir: " + G_CurrentDir);
     getAppletFrameItem()->title = G_CurrentDir;
 
-    if (beiklive::file::is_root_directory(G_CurrentDir))
-    {
-        this->registerAction("beiklive/hints/back"_i18n, brls::BUTTON_B, [](brls::View* view)
-            {
-        brls::Logger::debug("Menu button pressed.");
-            fileViewStack[fileViewStack.size() - 1]->recycler->dismiss(
-            []()
-            {
-                brls::Logger::debug("pre FileListView dismissed.");
-            });
-        return true; }, false, false, brls::SOUND_CLICK);
-    }
-    else
-    {
-
-        this->registerAction("beiklive/hints/back"_i18n, brls::BUTTON_START, [](brls::View* view)
-            {
-            // 处理按键
-            fileViewStack[fileViewStack.size() - 1]->recycler->dismiss(
-            []()
-            {
-                brls::Logger::debug("pre FileListView dismissed.");
-            });
-            brls::Logger::debug("Menu button pressed.");
-            return true; }, false, false, brls::SOUND_CLICK);
-    }
-
     brls::Logger::debug("FileListView created.");
 }
 
@@ -321,7 +270,7 @@ void FileListView::ListCurrentDir(std::string path)
     this->clearItems();
     if (G_CurrentDir != "/")
     {
-        this->addItem("..", "img/ui/folder");
+        this->addItem("..", "img/file/up");
     }
     for (const std::string& file : files)
     {

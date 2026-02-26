@@ -1,6 +1,5 @@
 #pragma once
 
-#if defined(IMPORT_MGBALIB)
 
 #include <mgba/core/blip_buf.h>
 #include <mgba/core/core.h>
@@ -23,5 +22,4 @@
 
 
 
-#endif
 

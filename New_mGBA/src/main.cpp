@@ -8,8 +8,7 @@
 
 #include "main_activity.hpp"
 
-// #include "Game/common.hpp"
-#include <mgba-util/vfs.h>
+#include "Game/common.hpp"
 
 
 #if defined(BOREALIS_USE_OPENGL)
@@ -18,25 +17,6 @@ extern "C" unsigned int sceLibcHeapSize = 2 * 1024 * 1024;
 #endif
 
 using namespace brls::literals; // for _i18n
-
-
-void mGBALib_TEST()
-{
-
-    struct VFile* vf = VFileOpen("./resources/i18n/zh-Hans/beiklive.json", O_RDONLY);
-    if (!vf) {
-        brls::Logger::error("Failed to open file");
-        return;
-    }
-    size_t size = vf->size(vf);
-    char* buffer = (char*) malloc(size);
-    vf->read(vf, buffer, vf->size(vf));
-    vf->close(vf);
-    std::cout << buffer << std::endl;
-    brls::Logger::info("mGBALib_TEST {}", buffer);
-
-}
-
 
 
 int main(int argc, char* argv[])
@@ -77,7 +57,6 @@ int main(int argc, char* argv[])
     brls::Application::pushActivity(mainActivity);
     mainActivity->InitActivity();
 
-    mGBALib_TEST();
 
     // Run the app
     while (brls::Application::mainLoop())

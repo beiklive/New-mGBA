@@ -6,4 +6,4 @@
 	url = https://github.com/libsdl-org/SDL.git
 [submodule "library/lib/extern/mgba"]
 	path = library/lib/extern/mgba
-	url = https://github.com/mgba-emu/mgba.git
+	url = https://gh-proxy.org/https://github.com/mgba-emu/mgba.git

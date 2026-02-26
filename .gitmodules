@@ -4,3 +4,6 @@
 [submodule "library/lib/extern/SDL"]
 	path = library/lib/extern/SDL
 	url = https://github.com/libsdl-org/SDL.git
+[submodule "library/lib/extern/mgba"]
+	path = library/lib/extern/mgba
+	url = https://github.com/mgba-emu/mgba.git

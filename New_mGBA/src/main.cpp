@@ -8,17 +8,8 @@
 
 #include "main_activity.hpp"
 
-#if defined(IMPORT_MGBALIB)
-#include <mgba/core/blip_buf.h>
-#include <mgba/core/core.h>
-#include <mgba/internal/gb/video.h>
-#include <mgba/internal/gba/audio.h>
-#include <mgba/internal/gba/input.h>
-#include <mgba-util/gui.h>
-#include <mgba-util/gui/font.h>
-#include <mgba-util/gui/menu.h>
-#include <mgba-util/vfs.h>
-#endif
+// #include "Game/common.hpp"
+// #include <mgba-util/vfs.h>
 
 
 #if defined(BOREALIS_USE_OPENGL)
@@ -27,6 +18,20 @@ extern "C" unsigned int sceLibcHeapSize = 2 * 1024 * 1024;
 #endif
 
 using namespace brls::literals; // for _i18n
+
+
+void mGBALib_TEST()
+{
+
+    // struct VFile* vf = VFileOpen("/Users/beiklive/Downloads/Pokémon - Crystal Advance Redux.gba", 0);
+    // if (!vf) {
+    //     brls::Logger::error("Failed to open file");
+    //     return;
+    // }
+
+}
+
+
 
 int main(int argc, char* argv[])
 {
@@ -41,7 +46,7 @@ int main(int argc, char* argv[])
             brls::Application::enableDebuggingView(true);
         }
     }
-
+    mGBALib_TEST();
 
     brls::Platform::APP_LOCALE_DEFAULT = brls::LOCALE_AUTO;
 

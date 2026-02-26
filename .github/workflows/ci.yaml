@@ -16,6 +16,9 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
+      - name: Install mGBA library
+        run: |
+          ./mgba_macbuild.sh
       - name: Build
         run: |
           cmake -B build -DCMAKE_BUILD_TYPE=Release -DPLATFORM_DESKTOP=ON -DBUNDLE_MACOS_APP=ON ${{ matrix.window.cmake }}
@@ -43,6 +46,9 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
+      - name: Install mGBA library
+        run: |
+          ./mgba_switchbuild.sh
       - name: Build
         run: |
           cmake -B build -DCMAKE_BUILD_TYPE=Release -DPLATFORM_SWITCH=ON ${{ matrix.cmake }}

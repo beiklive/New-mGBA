@@ -33,6 +33,7 @@ void mGBALib_TEST()
     vf->read(vf, buffer, vf->size(vf));
     vf->close(vf);
     std::cout << buffer << std::endl;
+    brls::Logger::info("mGBALib_TEST {}", buffer);
 
 }
 
@@ -51,7 +52,6 @@ int main(int argc, char* argv[])
             brls::Application::enableDebuggingView(true);
         }
     }
-    mGBALib_TEST();
 
     brls::Platform::APP_LOCALE_DEFAULT = brls::LOCALE_AUTO;
 
@@ -77,6 +77,7 @@ int main(int argc, char* argv[])
     brls::Application::pushActivity(mainActivity);
     mainActivity->InitActivity();
 
+    mGBALib_TEST();
 
     // Run the app
     while (brls::Application::mainLoop())

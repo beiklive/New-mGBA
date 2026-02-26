@@ -9,7 +9,7 @@
 #include "main_activity.hpp"
 
 // #include "Game/common.hpp"
-// #include <mgba-util/vfs.h>
+#include <mgba-util/vfs.h>
 
 
 #if defined(BOREALIS_USE_OPENGL)
@@ -23,11 +23,16 @@ using namespace brls::literals; // for _i18n
 void mGBALib_TEST()
 {
 
-    // struct VFile* vf = VFileOpen("/Users/beiklive/Downloads/Pokémon - Crystal Advance Redux.gba", 0);
-    // if (!vf) {
-    //     brls::Logger::error("Failed to open file");
-    //     return;
-    // }
+    struct VFile* vf = VFileOpen("./resources/i18n/zh-Hans/beiklive.json", O_RDONLY);
+    if (!vf) {
+        brls::Logger::error("Failed to open file");
+        return;
+    }
+    size_t size = vf->size(vf);
+    char* buffer = (char*) malloc(size);
+    vf->read(vf, buffer, vf->size(vf));
+    vf->close(vf);
+    std::cout << buffer << std::endl;
 
 }
 

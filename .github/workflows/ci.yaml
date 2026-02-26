@@ -56,5 +56,5 @@ jobs:
       - name: Upload dist
         uses: actions/upload-artifact@v4
         with:
-          name: borealis-switch-${{ matrix.ext }}
+          name: New_mGBA-switch-${{ matrix.ext }}
           path: build/New_mGBA.nro

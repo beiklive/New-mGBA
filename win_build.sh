@@ -1,0 +1,1 @@
+cmake -B build_pc -G Ninja -DCMAKE_BUILD_TYPE=Release -DPLATFORM_DESKTOP=ON -DWIN32_TERMINAL=OFF -DZLIB_USE_STATIC_LIBS=ON && cmake --build build_pc && ./build_pc/New_mGBA.exe -d

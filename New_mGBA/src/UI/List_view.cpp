@@ -14,9 +14,12 @@ std::vector<FileListView*> fileViewStack; // 用于保存 FileListView 的栈
 
 #if defined(SWITCH)
 #define ROOT_PATH "/"
+#elif defined(WIN32)
+#define ROOT_PATH "F:/games/GBA"
 #else
 #define ROOT_PATH "/Users/beiklive"
 #endif
+
 std::string G_CurrentDir = ROOT_PATH;
 
 RecyclerCell::RecyclerCell()

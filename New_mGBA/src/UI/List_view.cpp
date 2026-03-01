@@ -1,4 +1,5 @@
 #include "UI/List_view.hpp"
+#include "UI/game_view.hpp"
 
 #include <vector>
 
@@ -140,6 +141,15 @@ void DataSource::didSelectRowAt(brls::RecyclerFrame* recycler, brls::IndexPath i
                         brls::Logger::debug("pre FileListView dismissed.");
                     });
                 fileListView->applyItems();
+            }else if(pathType == beiklive::file::PathType::File){
+                brls::Logger::debug("Item is file, creating GameView for: " + selectedPath);
+                // 创建 gameview并显示
+                auto* frame = new brls::AppletFrame(new GameView());
+                frame->setBackground(brls::ViewBackground::NONE);
+                frame->setHeaderVisibility(brls::Visibility::GONE);
+                frame->setFooterVisibility(brls::Visibility::GONE);
+                brls::Application::pushActivity(new brls::Activity(frame));
+                brls::Logger::debug("GameView presented");
             }
         }
     }

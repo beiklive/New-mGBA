@@ -149,4 +149,57 @@ bool is_root_directory(const std::string& path_str) {
 }
 
 
+
+#ifdef _WIN32
+#include <windows.h>
+#elif defined(__linux__)
+#include <unistd.h>
+#include <limits.h>
+#elif defined(__APPLE__)
+#include <mach-o/dyld.h>
+#include <sys/syslimits.h>
+#endif
+
+fs::path get_executable_path() {
+#ifdef _WIN32
+    // Windows: 使用 GetModuleFileNameW 获取宽字符路径
+    wchar_t buffer[MAX_PATH];
+    DWORD size = GetModuleFileNameW(nullptr, buffer, MAX_PATH);
+    if (size == 0 || size == MAX_PATH) {
+        return fs::path();
+    }
+    return fs::path(std::wstring(buffer, size));
+#elif defined(__linux__)
+    // Linux: 读取符号链接 /proc/self/exe
+    char buffer[PATH_MAX];
+    ssize_t len = readlink("/proc/self/exe", buffer, sizeof(buffer) - 1);
+    if (len == -1) {
+        return fs::path();
+    }
+    buffer[len] = '\0';
+    return fs::path(std::string(buffer));
+#elif defined(__APPLE__)
+    // macOS: 使用 _NSGetExecutablePath
+    char buffer[PATH_MAX];
+    uint32_t size = sizeof(buffer);
+    if (_NSGetExecutablePath(buffer, &size) != 0) {
+        // 缓冲区不足，动态分配（此处简化，直接返回空）
+        return fs::path();
+    }
+    // _NSGetExecutablePath 返回的路径可能包含符号链接，可用 realpath 解析为绝对路径
+    char* real_path = realpath(buffer, nullptr);
+    if (real_path) {
+        fs::path result(real_path);
+        free(real_path);
+        return result;
+    }
+    return fs::path(buffer);
+#else
+    // 其他不支持的平台，返回空路径
+    return fs::path();
+#endif
+}
+
+
+
 } // namespace beiklive

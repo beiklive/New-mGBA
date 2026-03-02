@@ -3,6 +3,7 @@
 #include <borealis.hpp>
 
 #include <string>
+#include "Game/common.hpp"
 
 
 #define CELL_NAME_HOME "HomeCell"

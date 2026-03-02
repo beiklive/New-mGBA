@@ -2,7 +2,7 @@
 #include <filesystem>
 #include <string>
 #include <vector>
-
+#include <cstdlib>  // for std::size_t
 #include "Utils/strUtils.hpp"
 
 // 对文件和目录的操作
@@ -51,4 +51,6 @@ PathType getPathType(const std::string& path);
 std::string getParentPath(const std::string& path);
 
 bool is_root_directory(const std::string& path_str);
+
+fs::path get_executable_path();
 } // namespace beiklive

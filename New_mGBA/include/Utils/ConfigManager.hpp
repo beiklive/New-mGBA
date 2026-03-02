@@ -60,6 +60,7 @@ public:
 
 	static bool ConvertLegacyFile(const std::string& oldPath, const std::string& newPath);
 
+	void SetDefault(const std::string& key, const ConfigValue& value);
 	void Set(const std::string& key, const ConfigValue& value, bool persist = true);
 	std::optional<ConfigValue> Get(const std::string& key) const;
 

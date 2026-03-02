@@ -68,6 +68,12 @@ const ConfigValue::Variant& ConfigValue::Raw() const {
 ConfigManager::ConfigManager(std::string filePath) : filePath_(std::move(filePath)) {
 	if (std::filesystem::exists(filePath_)) {
 		Load();
+	}else{
+		// 文件不存在，创建一个空的配置文件
+		std::ofstream out(filePath_);
+		if (out.is_open()) {
+			out.close();
+		}
 	}
 }
 
@@ -116,6 +122,12 @@ bool ConfigManager::Save() const {
 		out << key << "=" << SerializeValue(entry.value) << "\n";
 	}
 	return true;
+}
+
+void ConfigManager::SetDefault(const std::string& key, const ConfigValue& value) {
+	if (!Contains(key)) {
+		Set(key, value, true);
+	}
 }
 
 void ConfigManager::Set(const std::string& key, const ConfigValue& value, bool persist) {

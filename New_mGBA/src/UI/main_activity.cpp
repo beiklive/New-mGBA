@@ -24,8 +24,8 @@ MainActivity::MainActivity()
 void MainActivity::InitActivity()
 {
 #if defined(SWITCH)
-    brls::Application::enableDebuggingView(true);
-    brls::Logger::setLogLevel(brls::LogLevel::LOG_DEBUG);
+    // brls::Application::enableDebuggingView(true);
+    // brls::Logger::setLogLevel(brls::LogLevel::LOG_DEBUG);
     this->setBackground("sdmc:/mGBA/backgrounds/bg2.png");
 #else
     this->setBackground("./resources/img/bg2.png");

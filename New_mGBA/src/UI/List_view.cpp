@@ -144,7 +144,7 @@ void DataSource::didSelectRowAt(brls::RecyclerFrame* recycler, brls::IndexPath i
             }else if(pathType == beiklive::file::PathType::File){
                 brls::Logger::debug("Item is file, creating GameView for: " + selectedPath);
                 // 创建 gameview并显示
-                auto* frame = new brls::AppletFrame(new GameView());
+                auto* frame = new brls::AppletFrame(new GameView(selectedPath));
                 frame->setBackground(brls::ViewBackground::NONE);
                 frame->setHeaderVisibility(brls::Visibility::GONE);
                 frame->setFooterVisibility(brls::Visibility::GONE);

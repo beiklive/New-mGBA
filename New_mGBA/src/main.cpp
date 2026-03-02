@@ -18,7 +18,6 @@ extern "C" unsigned int sceLibcHeapSize = 2 * 1024 * 1024;
 
 using namespace brls::literals; // for _i18n
 
-
 int main(int argc, char* argv[])
 {
     // We recommend to use INFO for real apps

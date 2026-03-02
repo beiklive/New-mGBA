@@ -10,6 +10,9 @@
 #include <mgba-util/gui/font.h>
 #include <mgba-util/gui/menu.h>
 #include <mgba-util/vfs.h>
+#include <mgba/core/rewind.h>
+#include <mgba-util/circle-buffer.h>
+#include <mgba/gba/interface.h>
 
 
 

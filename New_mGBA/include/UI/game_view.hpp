@@ -2,6 +2,8 @@
 
 #include <borealis.hpp>
 #include <glad/glad.h>
+#include "Game/common.hpp"
+
 
 class GameView : public brls::Box
 {

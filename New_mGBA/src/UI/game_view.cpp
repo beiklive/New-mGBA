@@ -6,6 +6,7 @@ GameView::GameView(std::string gameName) : GameView()
 {
     brls::Logger::debug("GameView constructor with gameName called: {}", gameName);
     m_gameName = std::move(gameName);
+    initialize();
 }
 
 GameView::GameView()

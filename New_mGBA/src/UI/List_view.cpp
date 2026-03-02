@@ -95,6 +95,19 @@ void DataSource::didSelectRowAt(brls::RecyclerFrame* recycler, brls::IndexPath i
             G_CurrentDir = ROOT_PATH;
             fileListView = new FileListView();
 
+            // 尝试从配置中获取上次的目录，如果存在且有效，则设置为当前目录
+            const char* lastPath = mCoreConfigGetValue(&gameRunner->config, "lastDirectory");
+            if (lastPath)
+            {
+                struct VDir* dir = VDirOpen(lastPath);
+                if (dir) {
+                    dir->close(dir);
+                    gameRunner->currentPath = lastPath;
+                    G_CurrentDir = lastPath;
+                    brls::Logger::info("Set current path to lastDirectory: {}", lastPath);
+                }
+            }
+
             fileListView->ListCurrentDir(G_CurrentDir);
             fileListView->applyItems();
         }
@@ -144,6 +157,13 @@ void DataSource::didSelectRowAt(brls::RecyclerFrame* recycler, brls::IndexPath i
             }else if(pathType == beiklive::file::PathType::File){
                 brls::Logger::debug("Item is file, creating GameView for: " + selectedPath);
                 // 创建 gameview并显示
+
+
+                // BKTODO: 这里名称暂时使用显示名称，后续修改列表数据结构支持实际文件名
+                gameRunner->gameFile.path = G_CurrentDir;
+                gameRunner->gameFile.name = listItems[indexPath.row].text;
+                gameRunner->gameFile.displayName = listItems[indexPath.row].text;
+
                 auto* frame = new brls::AppletFrame(new GameView(selectedPath));
                 frame->setBackground(brls::ViewBackground::NONE);
                 frame->setHeaderVisibility(brls::Visibility::GONE);
@@ -163,6 +183,9 @@ void DataSource::didSelectRowAt(brls::RecyclerFrame* recycler, brls::IndexPath i
         fileViewStack.push_back(fileListView); // 将新的 FileListView 添加到栈顶
         recycler->present(fileListView);
     }
+    // 更新全局当前路径
+    gameRunner->currentPath = G_CurrentDir;
+
     return;
 }
 

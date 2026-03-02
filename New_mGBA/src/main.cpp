@@ -39,7 +39,8 @@ void RunnerInit()
     gameRunner->lastFpsCheck = 0;
     gameRunner->totalDelta = 0;
     CircleBufferInit(&gameRunner->fpsBuffer, FPS_BUFFER_SIZE * sizeof(uint32_t));
-    
+    mCoreConfigInit(&gameRunner->config, gameRunner->port);
+
     gameRunner->rewinding = false;
     gameRunner->rewindEnabled = false;
     gameRunner->rewindMuteEnabled = false;
@@ -49,18 +50,26 @@ void RunnerInit()
     gameRunner->rewindPaused = false;
     gameRunner->rewindShowStatus = 0;
 
-    gameRunner->settingConfig->SetDefault("volume", 0x100);
-	gameRunner->settingConfig->SetDefault("idleOptimization", "detect");
-	gameRunner->settingConfig->SetDefault("autoload", true);
+
+    mCoreConfigSetDefaultIntValue(&gameRunner->config, "volume", 0x100);
+	mCoreConfigSetDefaultValue(&gameRunner->config, "idleOptimization", "detect");
+	mCoreConfigSetDefaultIntValue(&gameRunner->config, "autoload", true);
 #ifdef DISABLE_THREADING
-	gameRunner->settingConfig->SetDefault("autosave", false);
+	mCoreConfigSetDefaultIntValue(&gameRunner->config, "autosave", false);
 #else
-	gameRunner->settingConfig->SetDefault("autosave", true);
+	mCoreConfigSetDefaultIntValue(&gameRunner->config, "autosave", true);
 #endif
-	gameRunner->settingConfig->SetDefault("showOSD", true);
+	mCoreConfigSetDefaultIntValue(&gameRunner->config, "showOSD", true);
+	mCoreConfigLoad(&gameRunner->config);
 
 
-    gameRunner->settingConfig->Save();
+
+    // 新的个性化设置 也添加在这里初始化默认值
+
+
+
+    // 保存默认值到配置文件
+    // gameRunner->settingConfig->Save();
 }
 
 

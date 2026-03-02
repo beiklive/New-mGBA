@@ -25,16 +25,20 @@ GameView::~GameView()
 
 void GameView::initialize()
 {
-    brls::Logger::debug("GameView::initialize() - starting initialization");
+    m_gameRuntime = new beiklive::GameRuntime(m_gameName);
+    brls::Logger::debug("GameView::initialize() - GameRuntime created for game: {}", m_gameName);
 }
-
 void GameView::draw(NVGcontext* vg, float x, float y, float width, float height,
                     brls::Style style, brls::FrameContext* ctx)
 {
-    // 清屏（可选，因为全屏渲染会覆盖整个屏幕）
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-    
+
+    if (!m_gameRuntime) {
+        brls::Logger::error("GameRuntime not initialized, cannot draw game");
+        return;
+    }
+
+    m_gameRuntime->draw(vg, x, y, width, height, style, ctx);
+
     // 请求重绘以保持动画
     // this->invalidate();
 }

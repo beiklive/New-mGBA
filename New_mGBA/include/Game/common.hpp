@@ -29,11 +29,16 @@ struct Gamefile
     // 游戏文件显示名称
     std::string displayName;
     // 游戏文件类型（例如：GBA、GB）
-    int type;
+    mPlatform type = mPLATFORM_NONE;
     // 游戏输出分辨率
     int width;
     int height;
 };
+struct mGUIRunnerLux {
+	struct GBALuminanceSource d;
+	int luxLevel;
+};
+
 // 游戏运行时环境
 struct GameRunner
 {
@@ -42,6 +47,10 @@ struct GameRunner
     beiklive::ConfigManager* settingConfig;
     beiklive::ConfigManager* nameMappingConfig;
     Gamefile gameFile;
+    std::string currentPath;
+    
+    struct mGUIRunnerLux luminanceSource; // 亮度信息来源
+
 
     struct mCoreRewindContext rewind; // 倒带上下文
     bool rewinding; // 当前是否正在倒带
@@ -62,9 +71,10 @@ struct GameRunner
     struct CircleBuffer fpsBuffer;
 };
 
+
+};
+
 // 全局配置管理器实例
 extern beiklive::ConfigManager* SettingManager;
 extern beiklive::ConfigManager* NameMappingManager;
 extern beiklive::GameRunner* gameRunner;
-
-};

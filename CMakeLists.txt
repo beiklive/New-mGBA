@@ -52,31 +52,40 @@ list(APPEND APP_PLATFORM_LIB ${CMAKE_THREAD_LIBS_INIT})
 # file(GLOB_RECURSE MAIN_SRC demo/*.cpp)
 
 # New_mGBA 相关=============
+
+
+message(STATUS "Using mgbalib")
+set(MGBALIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/mgbalib)
+
+if (PLATFORM_SWITCH)
+    set(MGBALIB_LIB ${MGBALIB_DIR}/libmgba.a)
+elseif (PLATFORM_DESKTOP)
+    if (BUNDLE_MACOS_APP)
+        set(MGBALIB_LIB ${MGBALIB_DIR}/libmgba.dylib)
+    elseif (WIN32)
+        set(MGBALIB_LIB ${MGBALIB_DIR}/libmgba.dll)
+
+    endif()
+endif()
+
+find_path(OPENGLES3_INCLUDE_DIR NAMES GLES3/gl3.h)
+find_library(OPENGLES3_LIBRARY NAMES GLESv3 GLESv2)
+if(NOT OPENGLES3_INCLUDE_DIR OR NOT OPENGLES3_LIBRARY)
+    set(BUILD_GLES3 OFF CACHE BOOL "OpenGL|ES 3 not found" FORCE)
+endif()
+
+list(APPEND APP_PLATFORM_INCLUDE ${OPENGLES3_INCLUDE_DIR})
+list(APPEND APP_PLATFORM_INCLUDE ${MGBALIB_DIR}/include)
+list(APPEND APP_PLATFORM_LIB ${MGBALIB_LIB})
+list(APPEND APP_PLATFORM_LIB z)
+list(APPEND APP_PLATFORM_LIB ${OPENGLES3_LIBRARY})
+
+
+
 option(IMPORT_MGBALIB "build for mGBA" ON)
 
 list(APPEND APP_PLATFORM_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/New_mGBA/include)
 file(GLOB_RECURSE MAIN_SRC New_mGBA/src/*.cpp)
-
-if (IMPORT_MGBALIB)
-    message(STATUS "Using mgbalib")
-    set(MGBALIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/mgbalib)
-
-    if (PLATFORM_SWITCH)
-        set(MGBALIB_LIB ${MGBALIB_DIR}/libmgba.a)
-    elseif (PLATFORM_DESKTOP)
-        if (BUNDLE_MACOS_APP)
-            set(MGBALIB_LIB ${MGBALIB_DIR}/libmgba.dylib)
-        elseif (WIN32)
-            set(MGBALIB_LIB ${MGBALIB_DIR}/libmgba.dll)
-
-        endif()
-    endif()
-
-    list(APPEND APP_PLATFORM_INCLUDE ${MGBALIB_DIR}/include)
-    list(APPEND APP_PLATFORM_LIB ${MGBALIB_LIB})
-else()
-    message(STATUS "Using New_mGBA")
-endif()
 
 # New_mGBA 相关=============
 

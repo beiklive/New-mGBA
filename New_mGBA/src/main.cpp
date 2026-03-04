@@ -61,8 +61,7 @@ void RunnerInit()
 #endif
 	mCoreConfigSetDefaultIntValue(&gameRunner->config, "showOSD", true);
 	mCoreConfigLoad(&gameRunner->config);
-
-
+    mCoreConfigSavePath(&gameRunner->config, (SettingManager->Get("AppLocation")->AsString().value_or(".") + "/config.ini").c_str());
 
     // 新的个性化设置 也添加在这里初始化默认值
 
@@ -98,7 +97,6 @@ void ConfigManagerInit()
 #else
             SettingManager->Set("platform", "unknown");
 #endif
-            SettingManager->Save();
             brls::Logger::info("Platform information saved to setting.config.");
         }
     }
@@ -117,6 +115,8 @@ void ConfigManagerInit()
     {
         platform = *v->AsString();
     }
+    SettingManager->Set("AppLocation", exePath.parent_path().string());
+    SettingManager->Save();
     brls::Logger::info("Current platform: {}", platform);
 }
 
@@ -139,7 +139,6 @@ int main(int argc, char* argv[])
             brls::Application::enableDebuggingView(true);
         }
     }
-
     brls::Platform::APP_LOCALE_DEFAULT = brls::LOCALE_AUTO;
     // Init the app and i18n
     if (!brls::Application::init())
@@ -164,16 +163,12 @@ int main(int argc, char* argv[])
     brls::Application::pushActivity(mainActivity);
     mainActivity->InitActivity();
 
+
     // Run the app
     while (brls::Application::mainLoop())
         ;
 
     // Cleanup
-    delete mainActivity;
-    delete gameRunner;
-    delete SettingManager;
-    delete NameMappingManager;
-
 
     // Exit
     return EXIT_SUCCESS;

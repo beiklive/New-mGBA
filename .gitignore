@@ -11,4 +11,3 @@ builddir
 *.suprx
 libromfs-generator
 !.github/
-mgbalib/libmgba*

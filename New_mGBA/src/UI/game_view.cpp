@@ -19,6 +19,7 @@ GameView::GameView()
 
 GameView::~GameView()
 {
+    delete m_gameRuntime;
     brls::Logger::debug("GameView destructor called");
 }
 
@@ -26,6 +27,7 @@ GameView::~GameView()
 void GameView::initialize()
 {
     m_gameRuntime = new beiklive::GameRuntime(m_gameName);
+    m_gameRuntime->loadGame();
     brls::Logger::debug("GameView::initialize() - GameRuntime created for game: {}", m_gameName);
 }
 void GameView::draw(NVGcontext* vg, float x, float y, float width, float height,

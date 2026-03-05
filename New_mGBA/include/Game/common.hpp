@@ -38,7 +38,6 @@ struct mGUIRunnerLux {
 	struct GBALuminanceSource d;
 	int luxLevel;
 };
-
 // 游戏运行时环境
 struct GameRunner
 {

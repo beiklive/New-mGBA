@@ -35,6 +35,11 @@ void RunnerInit()
 
     gameRunner->core = nullptr;
     gameRunner->port = "switch";
+
+
+
+
+
     gameRunner->fps = 0;
     gameRunner->lastFpsCheck = 0;
     gameRunner->totalDelta = 0;
@@ -60,8 +65,9 @@ void RunnerInit()
 	mCoreConfigSetDefaultIntValue(&gameRunner->config, "autosave", true);
 #endif
 	mCoreConfigSetDefaultIntValue(&gameRunner->config, "showOSD", true);
-	mCoreConfigLoad(&gameRunner->config);
-    mCoreConfigSavePath(&gameRunner->config, (SettingManager->Get("AppLocation")->AsString().value_or(".") + "/config.ini").c_str());
+    mCoreConfigLoad(&gameRunner->config);
+    // mCoreConfigLoadPath(&gameRunner->config, (SettingManager->Get("AppLocation")->AsString().value_or(".") + "/config.ini").c_str());
+    // mCoreConfigSavePath(&gameRunner->config, (SettingManager->Get("AppLocation")->AsString().value_or(".") + "/config.ini").c_str());
 
     // 新的个性化设置 也添加在这里初始化默认值
 

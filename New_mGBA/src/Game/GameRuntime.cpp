@@ -80,9 +80,47 @@ static float gyroZ = 0;            // 陀螺仪Z轴旋转速度
 // 音频缓冲池（4个缓冲，每个大小为BUFFER_SIZE字节，4096字节对齐）
 const static size_t BUFFER_SIZE = 256;
 static struct mStereoSample audioBuffer[N_BUFFERS][BUFFER_SIZE / 4] __attribute__((__aligned__(0x1000)));
+static void _postAudioBuffer(struct mAVStream* stream, blip_t* left, blip_t* right) {
+	UNUSED(stream);
+	// _audioWait(0);
+	// while (enqueuedBuffers >= N_BUFFERS - 1) {
+	// 	if (!frameLimiter) {
+	// 		blip_clear(left);
+	// 		blip_clear(right);
+	// 		return;
+	// 	}
+	// 	_audioWait(10000000);
+	// }
+	// if (enqueuedBuffers >= N_BUFFERS) {
+	// 	blip_clear(left);
+	// 	blip_clear(right);
+	// 	return;
+	// }
+	// struct mStereoSample* samples = audioBuffer[audioBufferActive];
+	// blip_read_samples(left, &samples[0].left, SAMPLES, true);
+	// blip_read_samples(right, &samples[0].right, SAMPLES, true);
+	// // audoutAppendAudioOutBuffer(&audoutBuffer[audioBufferActive]);
+	// ++audioBufferActive;
+	// audioBufferActive %= N_BUFFERS;
+	// ++enqueuedBuffers;
+}
+static void _updateLux(struct GBALuminanceSource* lux) {
+	UNUSED(lux);
+}
 
+uint8_t _readLux(struct GBALuminanceSource* lux) {
+	if (!lux) {
+		brls::Logger::warning("[GameRuntime] _readLux called with null lux");
+		return static_cast<uint8_t>(0xFF - 0x16);
+	}
 
-
+	auto* runnerLux = reinterpret_cast<decltype(&gameRunner->luminanceSource)>(lux);
+	int value = 0x16;
+	if (runnerLux->luxLevel > 0) {
+		value += GBA_LUX_LEVELS[runnerLux->luxLevel - 1];
+	}
+	return static_cast<uint8_t>(0xFF - value);
+}
 // 映射手柄按键到模拟器输入
 static void _mapKey(struct mInputMap* map, uint32_t binding, int nativeKey, int key) {
 	// 使用内置函数获取按位位置，绑定按键到输入映射
@@ -159,19 +197,31 @@ GameRuntime::GameRuntime(const std::string& gamePath)
 
     glInit();
 
+	gameRunner->luminanceSource.d.readLuminance = _readLux;
+	gameRunner->luminanceSource.d.sample = _updateLux;
+	gameRunner->luminanceSource.luxLevel = 0;
 
 
-    loadGame();
-    brls::Logger::info("[GameRuntime] Runtime initialized, loaded={}", m_gameLoaded);
+
+	stream.videoDimensionsChanged = NULL;
+	stream.postVideoFrame = NULL;
+	stream.postAudioFrame = NULL;
+	stream.postAudioBuffer = _postAudioBuffer;
+
+
 }
 
 GameRuntime::~GameRuntime()
 {
+    gameRunner->core->unloadROM(gameRunner->core);
     brls::Logger::info("[GameRuntime] Destroying runtime, path={}", m_gamePath);
+    glDeinit();
 }
 
 void GameRuntime::loadGame()
 {
+
+
     brls::Logger::info("[GameRuntime] loadGame begin: {}", m_gamePath);
     bool found = false;
     gameRunner->core = mCoreFind(m_gamePath.c_str());
@@ -185,6 +235,8 @@ void GameRuntime::loadGame()
         brls::Logger::debug("[GameRuntime] ROM open attempted: {}", rom ? "success" : "failed");
 
         found = mCorePreloadVFCB(gameRunner->core, rom, _updateLoading, gameRunner);
+
+
         if(!found) {
             if(rom) {
                 rom->close(rom);
@@ -196,8 +248,6 @@ void GameRuntime::loadGame()
         }
         brls::Logger::info("[GameRuntime] ROM loaded successfully: {}", m_gamePath);
 
-
-
         if (gameRunner->core->platform(gameRunner->core) == mPLATFORM_GBA) {
 		    gameRunner->core->setPeripheral(gameRunner->core, mPERIPH_GBA_LUMINANCE, &gameRunner->luminanceSource.d);
             gameRunner->gameFile.type = mPLATFORM_GBA;
@@ -207,10 +257,8 @@ void GameRuntime::loadGame()
             brls::Logger::debug("[GameRuntime] Platform detected: GB");
         }
 
-
         gameRunner->core->setVideoGLTex(gameRunner->core, tex);
         brls::Logger::debug("[GameRuntime] GL texture registered to core: tex={}", tex);
-
 
         mCoreLoadForeignConfig(gameRunner->core, &gameRunner->config);
         mCoreAutoloadSave(gameRunner->core);
@@ -222,9 +270,6 @@ void GameRuntime::loadGame()
         brls::Logger::debug("[GameRuntime] Core reset completed");
 
         _gameLoaded();
-
-
-
 
         m_gameLoaded = true;
         brls::Logger::info("[GameRuntime] loadGame end: success");
@@ -251,8 +296,7 @@ void GameRuntime::glInit(void)
 	glGenTextures(1, &oldTex);
     brls::Logger::debug("[GameRuntime] GL oldTex created: {}", oldTex);
 	glBindTexture(GL_TEXTURE_2D, oldTex);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 
 	glGenBuffers(1, &pbo);
@@ -348,11 +392,10 @@ void GameRuntime::_drawFrame()
 
 	unsigned width, height;
 	gameRunner->core->desiredVideoDimensions(gameRunner->core, &width, &height);
-    if ((drawCount % 120) == 0) {
+    if ((drawCount % 10) == 0) {
         brls::Logger::debug("[GameRuntime] _drawFrame count={}, video={}x{}", drawCount, width, height);
     }
 
-	// ...existing code...
 	glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, tex);
     glEnable(GL_BLEND);
@@ -396,7 +439,7 @@ void GameRuntime::draw(NVGcontext* vg, float x, float y, float width, float heig
         if ((skipCount % 300) == 0) {
             brls::Logger::debug("[GameRuntime] draw throttled, skipCount={}", skipCount);
         }
-        return;
+        // return;
     }
 
     lastFrameTime = now;

@@ -17,18 +17,18 @@
 #pragma once
 
 #include <borealis.hpp>
-#include "UI/List_view.hpp"
-class MainActivity : public brls::Activity
+
+class CaptionedImage : public brls::Box
 {
   public:
-    MainActivity();
-    void InitActivity();
-    void setBackground(std::string path);
-    // Declare that the content of this activity is the given XML file
-    CONTENT_FROM_XML_RES("activity/beiklive_main.xml");
+    CaptionedImage();
 
-    BRLS_BIND(HomeMenuListView, homeListView, "homeListView");
+    void onChildFocusGained(brls::View* directChild, brls::View* focusedView) override;
+    void onChildFocusLost(brls::View* directChild, brls::View* focusedView) override;
 
+    static brls::View* create();
 
   private:
+    BRLS_BIND(brls::Image, image, "image");
+    BRLS_BIND(brls::Label, label, "label");
 };

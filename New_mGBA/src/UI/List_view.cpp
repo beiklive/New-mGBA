@@ -26,7 +26,7 @@ std::string G_CurrentDir = ROOT_PATH;
 RecyclerCell::RecyclerCell()
 {
     this->inflateFromXMLRes("xml/mgba_xml/cell/Img_text_cell.xml");
-    this->getView("img_text_cell_root")->setHighlightAlphaTransparent(true, 0.0f); // 取消选中高亮背景
+    // this->getView("img_text_cell_root")->setHighlightAlphaTransparent(true, 0.0f); // 取消选中高亮背景
 }
 
 RecyclerCell* RecyclerCell::create()
@@ -96,20 +96,24 @@ void DataSource::didSelectRowAt(brls::RecyclerFrame* recycler, brls::IndexPath i
             fileListView = new FileListView();
 
             // 尝试从配置中获取上次的目录，如果存在且有效，则设置为当前目录
-            const char* lastPath = mCoreConfigGetValue(&gameRunner->config, "lastDirectory");
-            if (lastPath)
+            if(auto lastPath = gameRunner->settingConfig->Get("lastDirectory"); lastPath && lastPath->AsString())
             {
-                struct VDir* dir = VDirOpen(lastPath);
-                if (dir) {
-                    dir->close(dir);
-                    gameRunner->currentPath = lastPath;
-                    G_CurrentDir = lastPath;
-                    brls::Logger::info("Set current path to lastDirectory: {}", lastPath);
+                std::string lastPathStr = *lastPath->AsString();
+                if (!lastPathStr.empty())
+                {
+                    struct VDir* dir = VDirOpen(lastPathStr.c_str());
+                    if (dir) {
+                        dir->close(dir);
+                        G_CurrentDir = lastPathStr;
+                        brls::Logger::info("Set current path to lastDirectory: {}", lastPathStr);
+                    }
                 }
             }
 
+
             fileListView->ListCurrentDir(G_CurrentDir);
             fileListView->applyItems();
+
         }
     }
     else if (cell_name == CELL_NAME_FILE)
@@ -160,6 +164,8 @@ void DataSource::didSelectRowAt(brls::RecyclerFrame* recycler, brls::IndexPath i
 
 
                 // BKTODO: 这里名称暂时使用显示名称，后续修改列表数据结构支持实际文件名
+                gameRunner->settingConfig->Set("lastDirectory", G_CurrentDir); // 保存当前目录到配置中
+                gameRunner->settingConfig->Save(); // 立即保存配置
                 gameRunner->gameFile.path = G_CurrentDir;
                 gameRunner->gameFile.name = listItems[indexPath.row].text;
                 gameRunner->gameFile.displayName = listItems[indexPath.row].text;
@@ -180,6 +186,7 @@ void DataSource::didSelectRowAt(brls::RecyclerFrame* recycler, brls::IndexPath i
 
     if (fileListView != nullptr)
     {
+        fileListView->getAppletFrameItem()->title = G_CurrentDir;
         fileViewStack.push_back(fileListView); // 将新的 FileListView 添加到栈顶
         recycler->present(fileListView);
     }

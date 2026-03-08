@@ -1,1 +1,1 @@
-cmake -B build_pc -G Ninja -DCMAKE_BUILD_TYPE=Release -DPLATFORM_DESKTOP=ON -DZLIB_USE_STATIC_LIBS=ON && cmake --build build_pc1 && ./build_pc1/New_mGBA.exe -v -d
+cmake -B build_pc -G Ninja -DCMAKE_BUILD_TYPE=Release -DPLATFORM_DESKTOP=ON -DZLIB_USE_STATIC_LIBS=ON && cmake --build build_pc && ./build_pc1/New_mGBA.exe -v -d

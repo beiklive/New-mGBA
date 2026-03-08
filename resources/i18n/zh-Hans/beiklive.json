@@ -1,10 +1,9 @@
 {
-    "title": "mGBA",
+    "title": "mGBA-NX",
     "tabs": {
-        "select":  "游戏",
+        "select":  "主页",
         "settings": "设置",
-        "about": "关于",
-        "exit": "退出"
+        "about": "关于"
     },
     "select": {
         "file": "从文件列表选择",

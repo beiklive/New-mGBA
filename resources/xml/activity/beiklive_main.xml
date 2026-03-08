@@ -1,40 +1,5 @@
 <brls:AppletFrame iconInterpolation="linear"
-    footerHidden="false">
-    <brls:TabFrame title="@i18n/beiklive/title"
-        icon="@res/img/mgba-96.png"
-        id="mainTabFrame">
-
-        <brls:Tab label="@i18n/beiklive/tabs/select"
-            image="img/ui/home"
-            id="select">
-
-            <HomeMenuListView 
-                id="homeListView"
-            />
-
-
-        </brls:Tab>
-
-        <brls:Separator />
-
-
-        <brls:Tab label="@i18n/beiklive/tabs/settings"
-            image="img/ui/settings">
-
-
-        </brls:Tab>
-        <brls:Tab label="@i18n/beiklive/tabs/about"
-            image="img/ui/help">
-
-        </brls:Tab>
-        <brls:Separator />
-        <brls:Tab label="@i18n/beiklive/tabs/exit"
-            image="img/ui/exit">
-
-
-
-        </brls:Tab>
-
-
-    </brls:TabFrame>
+    id="mainFrame"
+    >
+    
 </brls:AppletFrame>
